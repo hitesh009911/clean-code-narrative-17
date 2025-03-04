@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Code, FileCode, Github, Linkedin, Mail, MessageSquare, Monitor, Twitter } from "lucide-react";
+import { ChevronDown, Code, FileCode, Github, Linkedin, Mail, MessageSquare, Monitor, Moon, Sun, Twitter } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const projects = [
   {
@@ -69,14 +70,14 @@ const Index = () => {
   if (!mounted) return null;
 
   return (
-    <div className="relative min-h-screen bg-white">
+    <div className="relative min-h-screen bg-background">
       {/* Navigation */}
-      <header className="fixed top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur transition-all">
+      <header className="fixed top-0 z-50 w-full border-b border-gray-100 dark:border-gray-800 bg-background/80 backdrop-blur transition-all">
         <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="text-lg font-semibold">
             <span className="text-primary">Alex</span> Chen
           </div>
-          <nav className="hidden md:block">
+          <nav className="hidden md:flex md:items-center">
             <ul className="flex space-x-8">
               {["About", "Skills", "Projects", "Contact"].map((item) => (
                 <li key={item}>
@@ -86,7 +87,7 @@ const Index = () => {
                       "nav-link px-1 py-2 text-sm font-medium transition-colors",
                       activeSection === item.toLowerCase() 
                         ? "text-primary" 
-                        : "text-gray-600 hover:text-gray-900"
+                        : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {item}
@@ -94,8 +95,10 @@ const Index = () => {
                 </li>
               ))}
             </ul>
+            <ThemeToggle />
           </nav>
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
+            <ThemeToggle />
             <Button variant="ghost" size="sm">
               <Menu className="h-5 w-5" />
             </Button>
@@ -143,7 +146,7 @@ const Index = () => {
 
         {/* Scroll indicator */}
         <div className="flex justify-center mb-12 opacity-0 animate-fade-in-delayed">
-          <a href="#skills" className="flex flex-col items-center text-sm text-gray-400 transition-colors hover:text-gray-800">
+          <a href="#skills" className="flex flex-col items-center text-sm text-muted-foreground transition-colors hover:text-foreground">
             <span className="mb-2">Scroll to explore</span>
             <ChevronDown className="h-6 w-6 animate-bounce" />
           </a>
@@ -153,14 +156,14 @@ const Index = () => {
         <section id="skills" className="py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold mb-6 md:text-4xl">Technical Expertise</h2>
-            <p className="text-gray-600">A collection of technologies I work with to bring digital products to life.</p>
+            <p className="text-muted-foreground">A collection of technologies I work with to bring digital products to life.</p>
           </div>
           
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {skills.map((skill, index) => (
               <div 
                 key={skill.name} 
-                className="skill-tag flex flex-col items-center rounded-lg border border-gray-100 bg-white p-6 text-center shadow-sm"
+                className="skill-tag flex flex-col items-center rounded-lg border border-border bg-card p-6 text-center shadow-sm"
                 style={{ animationDelay: `${0.1 * index}s` }}
               >
                 <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
@@ -176,14 +179,14 @@ const Index = () => {
         <section id="projects" className="py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold mb-6 md:text-4xl">Featured Projects</h2>
-            <p className="text-gray-600">A selection of my recent work, showcasing my approach to problem-solving and design.</p>
+            <p className="text-muted-foreground">A selection of my recent work, showcasing my approach to problem-solving and design.</p>
           </div>
           
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project, index) => (
               <div 
                 key={project.id} 
-                className="project-card group rounded-xl border border-gray-100 bg-white overflow-hidden"
+                className="project-card group rounded-xl border border-border bg-card overflow-hidden"
                 style={{ animationDelay: `${0.1 * index}s` }}
               >
                 <div className="aspect-video w-full overflow-hidden">
@@ -195,10 +198,10 @@ const Index = () => {
                 </div>
                 <div className="p-6">
                   <h3 className="mb-2 text-xl font-semibold group-hover:text-primary transition-colors">{project.title}</h3>
-                  <p className="mb-4 text-sm text-gray-600">{project.description}</p>
+                  <p className="mb-4 text-sm text-muted-foreground">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map(tag => (
-                      <span key={tag} className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                      <span key={tag} className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
                         {tag}
                       </span>
                     ))}
@@ -213,7 +216,7 @@ const Index = () => {
         <section id="contact" className="py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold mb-6 md:text-4xl">Get In Touch</h2>
-            <p className="text-gray-600 mb-8">Have a project in mind or want to chat? Feel free to reach out.</p>
+            <p className="text-muted-foreground mb-8">Have a project in mind or want to chat? Feel free to reach out.</p>
             
             <div className="inline-flex items-center justify-center rounded-full bg-primary/10 px-4 py-2 text-primary">
               <Mail className="mr-2 h-4 w-4" />
@@ -226,7 +229,7 @@ const Index = () => {
               href="https://github.com" 
               target="_blank"
               rel="noopener noreferrer" 
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 transition-colors hover:bg-gray-50 hover:text-primary"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border transition-colors hover:bg-secondary hover:text-primary"
               aria-label="GitHub"
             >
               <Github className="h-5 w-5" />
@@ -235,7 +238,7 @@ const Index = () => {
               href="https://linkedin.com" 
               target="_blank"
               rel="noopener noreferrer" 
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 transition-colors hover:bg-gray-50 hover:text-primary"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border transition-colors hover:bg-secondary hover:text-primary"
               aria-label="LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
@@ -244,7 +247,7 @@ const Index = () => {
               href="https://twitter.com" 
               target="_blank"
               rel="noopener noreferrer" 
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 transition-colors hover:bg-gray-50 hover:text-primary"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border transition-colors hover:bg-secondary hover:text-primary"
               aria-label="Twitter"
             >
               <Twitter className="h-5 w-5" />
@@ -253,12 +256,12 @@ const Index = () => {
         </section>
       </main>
 
-      <footer className="border-t border-gray-100 py-8">
+      <footer className="border-t border-border py-8">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between md:flex-row">
-            <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Alex Chen. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Alex Chen. All rights reserved.</p>
             <div className="mt-4 md:mt-0">
-              <a href="#about" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+              <a href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Back to top
               </a>
             </div>
