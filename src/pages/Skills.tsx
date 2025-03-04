@@ -1,7 +1,8 @@
 
-import { Code, FileCode, Monitor, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Code, FileCode, Monitor } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import Navigation from "@/components/Navigation";
 
 const skills = [
   { name: "JavaScript/TypeScript", icon: <Code className="h-4 w-4" /> },
@@ -17,6 +18,7 @@ const skills = [
 const Skills = () => {
   return (
     <div className="relative min-h-screen bg-background pt-16">
+      <Navigation />
       <main className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="pt-8">
           <Button variant="ghost" asChild className="group mb-6">
