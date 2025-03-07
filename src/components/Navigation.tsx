@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { NavLink } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
 
@@ -12,25 +11,25 @@ const Navigation = () => {
     <nav className="fixed left-0 right-0 top-0 z-50 border-b bg-background">
       <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
-          <NavLink to="/" className="text-xl font-bold">
+          <a href="/" className="text-xl font-bold">
             Alex<span className="text-primary">Chen</span>
-          </NavLink>
+          </a>
         </div>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center space-x-8 md:flex">
-          <NavLink to="/" className="nav-link text-sm">
+          <a href="/" className="nav-link text-sm">
             Home
-          </NavLink>
-          <NavLink to="/skills" className="nav-link text-sm">
+          </a>
+          <a href="/skills" className="nav-link text-sm">
             Skills
-          </NavLink>
-          <NavLink to="/projects" className="nav-link text-sm">
+          </a>
+          <a href="/projects" className="nav-link text-sm">
             Projects
-          </NavLink>
-          <NavLink to="/contact" className="nav-link text-sm">
+          </a>
+          <a href="/contact" className="nav-link text-sm">
             Contact
-          </NavLink>
+          </a>
           <ThemeToggle />
         </div>
 
@@ -52,34 +51,34 @@ const Navigation = () => {
       {isOpen && (
         <div className="border-t bg-background px-4 py-4 md:hidden">
           <div className="flex flex-col space-y-4">
-            <NavLink
-              to="/"
+            <a
+              href="/"
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
               Home
-            </NavLink>
-            <NavLink
-              to="/skills"
+            </a>
+            <a
+              href="/skills"
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
               Skills
-            </NavLink>
-            <NavLink
-              to="/projects"
+            </a>
+            <a
+              href="/projects"
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
               Projects
-            </NavLink>
-            <NavLink
-              to="/contact"
+            </a>
+            <a
+              href="/contact"
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
               Contact
-            </NavLink>
+            </a>
           </div>
         </div>
       )}

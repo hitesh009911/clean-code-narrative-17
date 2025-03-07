@@ -12,6 +12,8 @@ const Index = () => {
   const [mounted, setMounted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  const [splineError, setSplineError] = useState(false);
 
   // Initialize after mount to avoid hydration issues
   useEffect(() => {
@@ -37,11 +39,27 @@ const Index = () => {
 
   if (!mounted) return null;
 
+  const handleSplineLoad = () => {
+    console.log("Spline scene loaded");
+    setSplineLoaded(true);
+  };
+
+  const handleSplineError = (error) => {
+    console.error("Spline error:", error);
+    setSplineError(true);
+  };
+
   return (
     <div className="relative min-h-screen bg-background">
       {/* Spline Background */}
       <div className="fixed inset-0 z-0 opacity-50">
-        <Spline scene="https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode" />
+        {!splineError && (
+          <Spline 
+            scene="https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode" 
+            onLoad={handleSplineLoad}
+            onError={handleSplineError}
+          />
+        )}
       </div>
       
       {/* Navigation */}
@@ -60,15 +78,15 @@ const Index = () => {
             <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               Alex Chen
             </h1>
-            <p className="mb-8 text-lg text-gray-600 opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+            <p className="mb-8 text-lg text-gray-600 dark:text-gray-300 opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
               I craft elegant digital experiences with clean code and thoughtful design. Specializing in building modern, user-centric web applications that balance form and function.
             </p>
             <div className="space-x-4 opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <Button asChild className="rounded-full">
-                <Link to="/projects">View My Work</Link>
+                <a href="/projects">View My Work</a>
               </Button>
               <Button asChild variant="outline" className="rounded-full">
-                <Link to="/contact">Get In Touch</Link>
+                <a href="/contact">Get In Touch</a>
               </Button>
             </div>
           </div>
@@ -87,10 +105,10 @@ const Index = () => {
 
         {/* Scroll indicator */}
         <div className="flex justify-center mb-12 opacity-0 animate-fade-in-delayed">
-          <Link to="/skills" className="flex flex-col items-center text-sm text-muted-foreground transition-colors hover:text-foreground">
+          <a href="/skills" className="flex flex-col items-center text-sm text-muted-foreground transition-colors hover:text-foreground">
             <span className="mb-2">Scroll to explore</span>
             <ChevronDown className="h-6 w-6 animate-bounce" />
-          </Link>
+          </a>
         </div>
       </main>
 
@@ -99,9 +117,9 @@ const Index = () => {
           <div className="flex flex-col items-center justify-between md:flex-row">
             <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Alex Chen. All rights reserved.</p>
             <div className="mt-4 md:mt-0">
-              <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a href="#top" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Back to top
-              </Link>
+              </a>
             </div>
           </div>
         </div>
