@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Github, Linkedin, Mail, Menu, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail, Menu, Twitter } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
@@ -102,14 +102,6 @@ const Index = () => {
             />
           </div>
         </section>
-
-        {/* Scroll indicator */}
-        <div className="flex justify-center mb-12 opacity-0 animate-fade-in-delayed">
-          <a href="/skills" className="flex flex-col items-center text-sm text-muted-foreground transition-colors hover:text-foreground">
-            <span className="mb-2">Scroll to explore</span>
-            <ChevronDown className="h-6 w-6 animate-bounce" />
-          </a>
-        </div>
       </main>
 
       <footer className="relative z-10 border-t border-border py-8">
