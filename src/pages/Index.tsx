@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Github, Linkedin, Mail, Menu, Twitter } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import Navigation from "@/components/Navigation";
+import Spline from '@splinetool/react-spline';
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
@@ -37,66 +39,15 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen bg-background">
+      {/* Spline Background */}
+      <div className="fixed inset-0 z-0 opacity-50">
+        <Spline scene="https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode" />
+      </div>
+      
       {/* Navigation */}
-      <header className="fixed top-0 z-50 w-full border-b border-gray-100 dark:border-gray-800 bg-background/80 backdrop-blur transition-all">
-        <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="text-lg font-semibold">
-            <Link to="/" className="text-primary">
-              <span className="text-primary">Alex</span> Chen
-            </Link>
-          </div>
-          <nav className="hidden md:flex md:items-center">
-            <ul className="flex space-x-8">
-              <li>
-                <Link 
-                  to="/" 
-                  className={cn(
-                    "nav-link px-1 py-2 text-sm font-medium transition-colors",
-                    activeSection === "about" 
-                      ? "text-primary" 
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/skills" 
-                  className="nav-link px-1 py-2 text-sm font-medium transition-colors text-muted-foreground hover:text-foreground"
-                >
-                  Skills
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/projects" 
-                  className="nav-link px-1 py-2 text-sm font-medium transition-colors text-muted-foreground hover:text-foreground"
-                >
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/contact" 
-                  className="nav-link px-1 py-2 text-sm font-medium transition-colors text-muted-foreground hover:text-foreground"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
-            <ThemeToggle />
-          </nav>
-          <div className="md:hidden flex items-center">
-            <ThemeToggle />
-            <Button variant="ghost" size="sm">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      </header>
+      <Navigation />
 
-      <main className="mx-auto max-w-screen-xl px-4 pt-16 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto max-w-screen-xl px-4 pt-16 sm:px-6 lg:px-8">
         {/* Hero/About Section */}
         <section 
           id="about" 
@@ -143,7 +94,7 @@ const Index = () => {
         </div>
       </main>
 
-      <footer className="border-t border-border py-8">
+      <footer className="relative z-10 border-t border-border py-8">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between md:flex-row">
             <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Alex Chen. All rights reserved.</p>
