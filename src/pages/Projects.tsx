@@ -58,7 +58,7 @@ const Projects = () => {
       <div className="fixed inset-0 z-0">
         {!splineError && (
           <Spline 
-            scene="https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode" 
+            scene="https://prod.spline.design/6Wq1Q7YGyM1vfGai/scene.splinecode" 
             onLoad={handleSplineLoad}
             onError={handleSplineError}
           />
