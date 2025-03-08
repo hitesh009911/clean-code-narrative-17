@@ -55,7 +55,7 @@ const Projects = () => {
   return (
     <div className="relative min-h-screen bg-background pt-16">
       {/* Spline Background */}
-      <div className="fixed inset-0 z-0 opacity-50">
+      <div className="fixed inset-0 z-0">
         {!splineError && (
           <Spline 
             scene="https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode" 
