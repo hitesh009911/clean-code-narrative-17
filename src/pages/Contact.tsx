@@ -1,14 +1,47 @@
 
+import { useState, useEffect } from "react";
 import { ArrowLeft, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
+import Spline from '@splinetool/react-spline';
 
 const Contact = () => {
+  const [mounted, setMounted] = useState(false);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  const [splineError, setSplineError] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const handleSplineLoad = () => {
+    console.log("Spline scene loaded");
+    setSplineLoaded(true);
+  };
+
+  const handleSplineError = (error) => {
+    console.error("Spline error:", error);
+    setSplineError(true);
+  };
+
   return (
     <div className="relative min-h-screen bg-background pt-16">
+      {/* Spline Background */}
+      <div className="fixed inset-0 z-0">
+        {!splineError && (
+          <Spline 
+            scene="https://prod.spline.design/d6jwKKF-FHexcpuk/scene.splinecode" 
+            onLoad={handleSplineLoad}
+            onError={handleSplineError}
+          />
+        )}
+      </div>
+
       <Navigation />
-      <main className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="pt-8">
           <Button variant="ghost" asChild className="group mb-6">
             <Link to="/" className="flex items-center text-muted-foreground hover:text-foreground">
