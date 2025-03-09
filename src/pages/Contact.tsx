@@ -54,7 +54,7 @@ const Contact = () => {
         <section className="py-8 md:py-16">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold mb-6 md:text-4xl text-white dark:text-white">Get In Touch</h2>
-            <p className="text-white dark:text-white mb-8">Have a project in mind or want to chat? Feel free to reach out.</p>
+            <p className="text-primary mb-8">Have a project in mind or want to chat? Feel free to reach out.</p>
             
             <div className="inline-flex items-center justify-center rounded-full bg-primary/10 px-4 py-2 text-primary">
               <Mail className="mr-2 h-4 w-4" />
