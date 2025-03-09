@@ -12,7 +12,7 @@ const Navigation = () => {
       <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <a href="/" className="text-xl font-bold">
-            Alex<span className="text-primary">Chen</span>
+            Hitesh<span className="text-primary">H</span>
           </a>
         </div>
 

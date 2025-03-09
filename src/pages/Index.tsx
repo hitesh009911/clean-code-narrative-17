@@ -76,7 +76,7 @@ const Index = () => {
               Frontend Developer
             </div>
             <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              Alex Chen
+              Hitesh H
             </h1>
             <p className="mb-8 text-lg text-gray-600 dark:text-gray-300 opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
               I craft elegant digital experiences with clean code and thoughtful design. Specializing in building modern, user-centric web applications that balance form and function.
@@ -93,7 +93,7 @@ const Index = () => {
           <div className="relative h-64 w-64 overflow-hidden rounded-full border border-gray-100 shadow-lg transition-all md:h-80 md:w-80 opacity-0 animate-fade-in-delayed">
             <img
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
-              alt="Alex Chen - Developer"
+              alt="Hitesh H - Developer"
               className={cn(
                 "h-full w-full object-cover transition-all",
                 imageLoaded ? "animate-image-load" : "blur-md scale-105"
@@ -107,7 +107,7 @@ const Index = () => {
       <footer className="relative z-10 border-t border-border py-8">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between md:flex-row">
-            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Alex Chen. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Hitesh H. All rights reserved.</p>
             <div className="mt-4 md:mt-0">
               <a href="#top" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Back to top
