@@ -1,21 +1,55 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Code, FileCode, Monitor } from "lucide-react";
+import { ArrowLeft, Code, FileCode, Monitor, Database, Terminal, Server, Github, Layers, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
+import { motion } from "framer-motion";
 
 const skills = [
-  { name: "JavaScript/TypeScript", icon: <Code className="h-4 w-4" /> },
-  { name: "React & Next.js", icon: <FileCode className="h-4 w-4" /> },
-  { name: "UI/UX Design", icon: <Monitor className="h-4 w-4" /> },
-  { name: "Node.js", icon: <Code className="h-4 w-4" /> },
-  { name: "RESTful APIs", icon: <Code className="h-4 w-4" /> },
-  { name: "PostgreSQL", icon: <FileCode className="h-4 w-4" /> },
-  { name: "Tailwind CSS", icon: <FileCode className="h-4 w-4" /> },
-  { name: "Git/Version Control", icon: <Code className="h-4 w-4" /> },
+  { name: "JavaScript/TypeScript", icon: <Code className="h-4 w-4" />, color: "#9b87f5" },
+  { name: "React & Next.js", icon: <FileCode className="h-4 w-4" />, color: "#D946EF" },
+  { name: "UI/UX Design", icon: <Monitor className="h-4 w-4" />, color: "#0EA5E9" },
+  { name: "Node.js", icon: <Server className="h-4 w-4" />, color: "#8B5CF6" },
+  { name: "RESTful APIs", icon: <Zap className="h-4 w-4" />, color: "#F97316" },
+  { name: "PostgreSQL", icon: <Database className="h-4 w-4" />, color: "#0EA5E9" },
+  { name: "Tailwind CSS", icon: <Layers className="h-4 w-4" />, color: "#9b87f5" },
+  { name: "Git/Version Control", icon: <Github className="h-4 w-4" />, color: "#D946EF" },
 ];
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3
+    }
+  }
+};
+
+const item = {
+  hidden: { y: 20, opacity: 0 },
+  show: { 
+    y: 0, 
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 10
+    }
+  },
+  hover: {
+    y: -10,
+    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10
+    }
+  }
+};
 
 const Skills = () => {
   const [mounted, setMounted] = useState(false);
@@ -86,24 +120,54 @@ const Skills = () => {
         
         <section className="py-8 md:py-16">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl font-bold mb-6 md:text-4xl">Technical Expertise</h2>
-            <p className="text-muted-foreground">A collection of technologies I work with to bring digital products to life.</p>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold mb-6 md:text-4xl"
+            >
+              Technical Expertise
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-muted-foreground"
+            >
+              A collection of technologies I work with to bring digital products to life.
+            </motion.p>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <motion.div 
+            className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4"
+            variants={container}
+            initial="hidden"
+            animate="show"
+          >
             {skills.map((skill, index) => (
-              <div 
+              <motion.div 
                 key={skill.name} 
-                className="skill-tag flex flex-col items-center rounded-lg border border-border bg-card p-6 text-center shadow-sm"
-                style={{ animationDelay: `${0.1 * index}s` }}
+                className="flex flex-col items-center rounded-lg backdrop-blur-md bg-card/50 p-6 text-center shadow-sm border border-border/50"
+                variants={item}
+                whileHover={{
+                  y: -10,
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                }}
               >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                  {skill.icon}
-                </div>
+                <motion.div 
+                  className="mb-3 flex h-12 w-12 items-center justify-center rounded-full"
+                  style={{ backgroundColor: `${skill.color}20` }}
+                  whileHover={{
+                    scale: 1.1,
+                    backgroundColor: `${skill.color}30`,
+                  }}
+                >
+                  <span style={{ color: skill.color }}>{skill.icon}</span>
+                </motion.div>
                 <h3 className="text-sm font-medium">{skill.name}</h3>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
       </main>
     </div>
