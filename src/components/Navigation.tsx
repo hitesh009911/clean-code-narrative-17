@@ -9,7 +9,7 @@ const Navigation = () => {
 
   return (
     <nav className="fixed left-0 right-0 top-4 z-50 mx-auto max-w-screen-lg px-4">
-      <div className="mx-auto flex items-center justify-between rounded-full bg-background/80 px-6 py-3 backdrop-blur-md border border-border/50 shadow-md">
+      <div className="mx-auto flex items-center justify-between rounded-full bg-background/80 px-6 py-3 backdrop-blur-md border-0 shadow-md">
         <div className="flex items-center">
           <a href="/" className="text-xl font-bold">
             Hitesh<span className="text-primary">H</span>
@@ -46,7 +46,7 @@ const Navigation = () => {
 
       {/* Mobile Navigation Menu */}
       {isOpen && (
-        <div className="mt-2 rounded-xl border bg-background/95 px-4 py-4 backdrop-blur-md shadow-md md:hidden">
+        <div className="mt-2 rounded-xl border-0 bg-background/95 px-4 py-4 backdrop-blur-md shadow-md md:hidden">
           <div className="flex flex-col space-y-4">
             <a
               href="/skills"

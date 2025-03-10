@@ -62,6 +62,28 @@ const Skills = () => {
           </Button>
         </div>
         
+        {/* About Me Section */}
+        <section className="py-8 md:py-12 mb-8">
+          <div className="max-w-3xl mx-auto mb-12">
+            <h2 className="text-3xl font-bold mb-6 md:text-4xl text-center">About Me</h2>
+            <div className="prose dark:prose-invert max-w-none space-y-4 text-pretty">
+              <p>
+                Hello! I'm Hitesh, a passionate full-stack developer with a keen eye for design and user experience. 
+                I specialize in creating modern, performant web applications that blend functionality with aesthetic appeal.
+              </p>
+              <p>
+                With over 5 years of experience in web development, I've worked on projects ranging from simple landing pages to complex 
+                enterprise applications. My approach combines technical excellence with creative problem-solving to deliver solutions 
+                that exceed expectations.
+              </p>
+              <p>
+                When I'm not coding, you can find me exploring new technologies, contributing to open-source, or enjoying the outdoors. 
+                I believe in continuous learning and staying ahead of industry trends to deliver cutting-edge solutions.
+              </p>
+            </div>
+          </div>
+        </section>
+        
         <section className="py-8 md:py-16">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold mb-6 md:text-4xl">Technical Expertise</h2>
