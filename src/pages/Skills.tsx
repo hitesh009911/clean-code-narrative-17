@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Code, FileCode, Monitor, Database, Terminal, Server, Github, Layers, Zap } from "lucide-react";
+import { ArrowLeft, Code, FileCode, Monitor, Database, Terminal, Server, Github, Layers, Zap, Cpu, Globe, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -8,15 +8,43 @@ import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const skills = [
-  { name: "JavaScript/TypeScript", icon: <Code className="h-4 w-4" />, color: "#9b87f5" },
-  { name: "React & Next.js", icon: <FileCode className="h-4 w-4" />, color: "#D946EF" },
-  { name: "UI/UX Design", icon: <Monitor className="h-4 w-4" />, color: "#0EA5E9" },
-  { name: "Node.js", icon: <Server className="h-4 w-4" />, color: "#8B5CF6" },
-  { name: "RESTful APIs", icon: <Zap className="h-4 w-4" />, color: "#F97316" },
-  { name: "PostgreSQL", icon: <Database className="h-4 w-4" />, color: "#0EA5E9" },
-  { name: "Tailwind CSS", icon: <Layers className="h-4 w-4" />, color: "#9b87f5" },
-  { name: "Git/Version Control", icon: <Github className="h-4 w-4" />, color: "#D946EF" },
+// Modern skill categories
+const skillCategories = [
+  {
+    title: "Frontend Development",
+    skills: [
+      { name: "React & Next.js", icon: <FileCode className="h-5 w-5" />, color: "#D946EF" },
+      { name: "TypeScript", icon: <Code className="h-5 w-5" />, color: "#0EA5E9" },
+      { name: "Tailwind CSS", icon: <Layers className="h-5 w-5" />, color: "#0EA5E9" },
+      { name: "UI/UX Design", icon: <Monitor className="h-5 w-5" />, color: "#F97316" },
+    ],
+  },
+  {
+    title: "Backend Development",
+    skills: [
+      { name: "Node.js", icon: <Server className="h-5 w-5" />, color: "#8B5CF6" },
+      { name: "Express & NestJS", icon: <Terminal className="h-5 w-5" />, color: "#9b87f5" },
+      { name: "PostgreSQL", icon: <Database className="h-5 w-5" />, color: "#0EA5E9" },
+      { name: "RESTful APIs", icon: <Zap className="h-5 w-5" />, color: "#F97316" },
+    ],
+  },
+  {
+    title: "DevOps & Tools",
+    skills: [
+      { name: "Git & GitHub", icon: <Github className="h-5 w-5" />, color: "#D946EF" },
+      { name: "Docker", icon: <Cpu className="h-5 w-5" />, color: "#0EA5E9" },
+      { name: "CI/CD Pipelines", icon: <Layers className="h-5 w-5" />, color: "#9b87f5" },
+      { name: "AWS & Vercel", icon: <Globe className="h-5 w-5" />, color: "#F97316" },
+    ],
+  },
+];
+
+// Stats for modern KPI cards
+const developerStats = [
+  { value: "5+", label: "Years Experience", icon: <Award className="h-5 w-5" />, color: "from-purple-500 to-indigo-500" },
+  { value: "35+", label: "Projects Completed", icon: <Layers className="h-5 w-5" />, color: "from-pink-500 to-rose-500" },
+  { value: "15+", label: "Happy Clients", icon: <Globe className="h-5 w-5" />, color: "from-blue-500 to-cyan-500" },
+  { value: "99%", label: "Success Rate", icon: <Zap className="h-5 w-5" />, color: "from-amber-500 to-orange-500" },
 ];
 
 const container = {
@@ -133,7 +161,38 @@ const Skills = () => {
             </div>
           </div>
         </section>
+
+        {/* Modern KPI Stats Section */}
+        <section className="py-8 md:py-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="grid grid-cols-2 gap-4 sm:grid-cols-4 mb-16"
+          >
+            {developerStats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className={`relative overflow-hidden rounded-xl p-6 bg-gradient-to-br ${stat.color} shadow-lg`}
+              >
+                <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white/10 blur-xl"></div>
+                <div className="relative flex flex-col text-white">
+                  <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
+                    {stat.icon}
+                  </div>
+                  <span className="text-3xl font-bold">{stat.value}</span>
+                  <span className="text-sm font-medium text-white/80">{stat.label}</span>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
         
+        {/* Skills Categories Section */}
         <section className="py-8 md:py-16">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <motion.h2 
@@ -154,36 +213,51 @@ const Skills = () => {
             </motion.p>
           </div>
           
-          <motion.div 
-            className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4"
-            variants={container}
-            initial="hidden"
-            animate="show"
-          >
-            {skills.map((skill, index) => (
-              <motion.div 
-                key={skill.name} 
-                className="flex flex-col items-center rounded-lg backdrop-blur-md bg-card/50 p-6 text-center shadow-sm border border-border/50"
-                variants={item}
-                whileHover={{
-                  y: -10,
-                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                }}
-              >
-                <motion.div 
-                  className="mb-3 flex h-12 w-12 items-center justify-center rounded-full"
-                  style={{ backgroundColor: `${skill.color}20` }}
-                  whileHover={{
-                    scale: 1.1,
-                    backgroundColor: `${skill.color}30`,
-                  }}
+          <div className="grid gap-12">
+            {skillCategories.map((category, categoryIndex) => (
+              <div key={category.title} className="mb-10">
+                <motion.h3 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: categoryIndex * 0.1, duration: 0.5 }}
+                  className="text-xl font-semibold mb-6 border-l-4 border-primary pl-4"
                 >
-                  <span style={{ color: skill.color }}>{skill.icon}</span>
+                  {category.title}
+                </motion.h3>
+                
+                <motion.div 
+                  className="grid grid-cols-2 gap-6 md:grid-cols-4"
+                  variants={container}
+                  initial="hidden"
+                  animate="show"
+                >
+                  {category.skills.map((skill, index) => (
+                    <motion.div 
+                      key={skill.name} 
+                      className="flex flex-col items-center rounded-lg backdrop-blur-md bg-card/50 p-6 text-center shadow-sm border border-border/50"
+                      variants={item}
+                      whileHover={{
+                        y: -10,
+                        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                      }}
+                    >
+                      <motion.div 
+                        className="mb-3 flex h-12 w-12 items-center justify-center rounded-full"
+                        style={{ backgroundColor: `${skill.color}20` }}
+                        whileHover={{
+                          scale: 1.1,
+                          backgroundColor: `${skill.color}30`,
+                        }}
+                      >
+                        <span style={{ color: skill.color }}>{skill.icon}</span>
+                      </motion.div>
+                      <h3 className="text-sm font-medium">{skill.name}</h3>
+                    </motion.div>
+                  ))}
                 </motion.div>
-                <h3 className="text-sm font-medium">{skill.name}</h3>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </section>
       </main>
     </div>
