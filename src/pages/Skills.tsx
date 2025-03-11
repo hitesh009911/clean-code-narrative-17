@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Code, FileCode, Monitor, Database, Terminal, Server, Github, Layers, Zap, Cpu, Globe, Award } from "lucide-react";
+import { ArrowLeft, Code, FileCode, Monitor, Database, Terminal, Server, Github, Layers, Zap, Cpu, Globe, Award, BrainCircuit, Bot, Sparkles, LineChart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -8,7 +8,7 @@ import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// Modern skill categories
+// Updated skill categories with AI/ML
 const skillCategories = [
   {
     title: "Frontend Development",
@@ -29,6 +29,15 @@ const skillCategories = [
     ],
   },
   {
+    title: "AI & Machine Learning",
+    skills: [
+      { name: "Python", icon: <Code className="h-5 w-5" />, color: "#8B5CF6" },
+      { name: "TensorFlow & PyTorch", icon: <BrainCircuit className="h-5 w-5" />, color: "#D946EF" },
+      { name: "NLP & Computer Vision", icon: <Bot className="h-5 w-5" />, color: "#0EA5E9" },
+      { name: "Data Analysis", icon: <LineChart className="h-5 w-5" />, color: "#F97316" },
+    ],
+  },
+  {
     title: "DevOps & Tools",
     skills: [
       { name: "Git & GitHub", icon: <Github className="h-5 w-5" />, color: "#D946EF" },
@@ -39,9 +48,9 @@ const skillCategories = [
   },
 ];
 
-// Stats for modern KPI cards
+// Updated stats with 1+ year
 const developerStats = [
-  { value: "5+", label: "Years Experience", icon: <Award className="h-5 w-5" />, color: "from-purple-500 to-indigo-500" },
+  { value: "1+", label: "Year Experience", icon: <Award className="h-5 w-5" />, color: "from-purple-500 to-indigo-500" },
   { value: "35+", label: "Projects Completed", icon: <Layers className="h-5 w-5" />, color: "from-pink-500 to-rose-500" },
   { value: "15+", label: "Happy Clients", icon: <Globe className="h-5 w-5" />, color: "from-blue-500 to-cyan-500" },
   { value: "99%", label: "Success Rate", icon: <Zap className="h-5 w-5" />, color: "from-amber-500 to-orange-500" },
@@ -145,24 +154,25 @@ const Skills = () => {
               <h2 className="text-3xl font-bold mb-6 md:text-4xl">About Me</h2>
               <div className="prose dark:prose-invert max-w-none space-y-4 text-pretty">
                 <p>
-                  Hello! I'm Hitesh, a passionate full-stack developer with a keen eye for design and user experience. 
-                  I specialize in creating modern, performant web applications that blend functionality with aesthetic appeal.
+                  Hello! I'm Hitesh, a passionate full-stack developer with expertise in AI and machine learning. 
+                  I combine technical skills with creative problem-solving to build innovative solutions.
                 </p>
                 <p>
-                  With over 5 years of experience in web development, I've worked on projects ranging from simple landing pages to complex 
-                  enterprise applications. My approach combines technical excellence with creative problem-solving to deliver solutions 
-                  that exceed expectations.
+                  With over a year of experience in web and AI development, I've worked on projects ranging from 
+                  responsive web applications to advanced machine learning models. My approach focuses on 
+                  creating user-friendly experiences while leveraging cutting-edge technologies.
                 </p>
                 <p>
-                  When I'm not coding, you can find me exploring new technologies, contributing to open-source, or enjoying the outdoors. 
-                  I believe in continuous learning and staying ahead of industry trends to deliver cutting-edge solutions.
+                  When I'm not coding, you can find me exploring new technologies, contributing to open-source projects,
+                  or diving into the latest research in artificial intelligence. I believe in continuous learning and 
+                  staying ahead of industry trends to deliver innovative solutions.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Modern KPI Stats Section */}
+        {/* Modern KPI Stats Section - Redesigned for better visual appeal */}
         <section className="py-8 md:py-12">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -176,10 +186,11 @@ const Skills = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className={`relative overflow-hidden rounded-xl p-6 bg-gradient-to-br ${stat.color} shadow-lg`}
+                whileHover={{ y: -5, scale: 1.02, transition: { duration: 0.2 } }}
+                className={`relative overflow-hidden rounded-xl p-6 bg-gradient-to-br ${stat.color} shadow-lg backdrop-blur-sm border border-white/10`}
               >
                 <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white/10 blur-xl"></div>
+                <div className="absolute bottom-0 left-0 h-16 w-16 rounded-full bg-white/5 blur-lg"></div>
                 <div className="relative flex flex-col text-white">
                   <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
                     {stat.icon}
