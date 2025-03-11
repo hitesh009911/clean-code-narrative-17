@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const skills = [
   { name: "JavaScript/TypeScript", icon: <Code className="h-4 w-4" />, color: "#9b87f5" },
@@ -55,6 +56,7 @@ const Skills = () => {
   const [mounted, setMounted] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -96,24 +98,38 @@ const Skills = () => {
           </Button>
         </div>
         
-        {/* About Me Section */}
+        {/* About Me Section with Image */}
         <section className="py-8 md:py-12 mb-8">
-          <div className="max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold mb-6 md:text-4xl text-center">About Me</h2>
-            <div className="prose dark:prose-invert max-w-none space-y-4 text-pretty">
-              <p>
-                Hello! I'm Hitesh, a passionate full-stack developer with a keen eye for design and user experience. 
-                I specialize in creating modern, performant web applications that blend functionality with aesthetic appeal.
-              </p>
-              <p>
-                With over 5 years of experience in web development, I've worked on projects ranging from simple landing pages to complex 
-                enterprise applications. My approach combines technical excellence with creative problem-solving to deliver solutions 
-                that exceed expectations.
-              </p>
-              <p>
-                When I'm not coding, you can find me exploring new technologies, contributing to open-source, or enjoying the outdoors. 
-                I believe in continuous learning and staying ahead of industry trends to deliver cutting-edge solutions.
-              </p>
+          <div className="max-w-3xl mx-auto mb-12 flex flex-col md:flex-row items-center gap-8">
+            <div className="relative h-64 w-64 overflow-hidden rounded-full border border-gray-100 shadow-lg transition-all md:h-80 md:w-80 opacity-0 animate-fade-in-delayed">
+              <img
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
+                alt="Hitesh H - Developer"
+                className={cn(
+                  "h-full w-full object-cover transition-all",
+                  imageLoaded ? "animate-image-load" : "blur-md scale-105"
+                )}
+                onLoad={() => setImageLoaded(true)}
+              />
+            </div>
+            
+            <div className="flex-1">
+              <h2 className="text-3xl font-bold mb-6 md:text-4xl">About Me</h2>
+              <div className="prose dark:prose-invert max-w-none space-y-4 text-pretty">
+                <p>
+                  Hello! I'm Hitesh, a passionate full-stack developer with a keen eye for design and user experience. 
+                  I specialize in creating modern, performant web applications that blend functionality with aesthetic appeal.
+                </p>
+                <p>
+                  With over 5 years of experience in web development, I've worked on projects ranging from simple landing pages to complex 
+                  enterprise applications. My approach combines technical excellence with creative problem-solving to deliver solutions 
+                  that exceed expectations.
+                </p>
+                <p>
+                  When I'm not coding, you can find me exploring new technologies, contributing to open-source, or enjoying the outdoors. 
+                  I believe in continuous learning and staying ahead of industry trends to deliver cutting-edge solutions.
+                </p>
+              </div>
             </div>
           </div>
         </section>

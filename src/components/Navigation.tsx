@@ -19,7 +19,7 @@ const Navigation = () => {
         {/* Desktop Navigation */}
         <div className="hidden items-center space-x-8 md:flex">
           <a href="/skills" className="nav-link text-sm">
-            Skills
+            About Me
           </a>
           <a href="/projects" className="nav-link text-sm">
             Projects
@@ -53,7 +53,7 @@ const Navigation = () => {
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
-              Skills
+              About Me
             </a>
             <a
               href="/projects"

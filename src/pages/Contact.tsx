@@ -56,9 +56,9 @@ const Contact = () => {
             <h2 className="text-3xl font-bold mb-6 md:text-4xl text-white">Get In Touch</h2>
             <p className="text-white mb-8">Have a project in mind or want to chat? Feel free to reach out.</p>
             
-            <div className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-white">
+            <div className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-white hover:bg-primary/20 transition-all">
               <Mail className="mr-2 h-4 w-4" />
-              <a href="mailto:hello@hiteshh.dev" className="text-sm font-medium">hello@hiteshh.dev</a>
+              <a href="mailto:hello@hiteshh.dev" className="text-sm font-medium hover:text-primary transition-colors">hello@hiteshh.dev</a>
             </div>
           </div>
           
@@ -67,7 +67,7 @@ const Contact = () => {
               href="https://github.com" 
               target="_blank"
               rel="noopener noreferrer" 
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/10 text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-primary/20 hover:text-primary text-white hover:border-primary/30"
               aria-label="GitHub"
             >
               <Github className="h-5 w-5" />
@@ -76,7 +76,7 @@ const Contact = () => {
               href="https://linkedin.com" 
               target="_blank"
               rel="noopener noreferrer" 
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/10 text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-primary/20 hover:text-primary text-white hover:border-primary/30"
               aria-label="LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
@@ -85,7 +85,7 @@ const Contact = () => {
               href="https://twitter.com" 
               target="_blank"
               rel="noopener noreferrer" 
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/10 text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-primary/20 hover:text-primary text-white hover:border-primary/30"
               aria-label="Twitter"
             >
               <Twitter className="h-5 w-5" />

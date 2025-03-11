@@ -10,7 +10,6 @@ import Spline from '@splinetool/react-spline';
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
@@ -71,7 +70,7 @@ const Index = () => {
           id="about" 
           className="flex min-h-[90vh] flex-col items-center justify-center py-16 md:flex-row md:items-center md:justify-between md:py-24"
         >
-          <div className="mb-10 max-w-md text-center md:mb-0 md:max-w-md md:text-left">
+          <div className="max-w-md text-center md:text-left">
             <div className="mb-2 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary opacity-0 animate-fade-in">
               Frontend Developer
             </div>
@@ -90,32 +89,10 @@ const Index = () => {
               </Button>
             </div>
           </div>
-          <div className="relative h-64 w-64 overflow-hidden rounded-full border border-gray-100 shadow-lg transition-all md:h-80 md:w-80 opacity-0 animate-fade-in-delayed">
-            <img
-              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
-              alt="Hitesh H - Developer"
-              className={cn(
-                "h-full w-full object-cover transition-all",
-                imageLoaded ? "animate-image-load" : "blur-md scale-105"
-              )}
-              onLoad={() => setImageLoaded(true)}
-            />
-          </div>
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-border py-8">
-        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-between md:flex-row">
-            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Hitesh H. All rights reserved.</p>
-            <div className="mt-4 md:mt-0">
-              <a href="#top" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Back to top
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Removed footer with line */}
     </div>
   );
 };
