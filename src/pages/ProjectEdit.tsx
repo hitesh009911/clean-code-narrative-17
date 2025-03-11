@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Eye } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -35,7 +35,7 @@ const ProjectEdit = () => {
 
   const handleSubmit = (data: ProjectFormData) => {
     updateProject(Number(id), data);
-    navigate('/projects/manage');
+    navigate(`/projects/${id}`);
   };
 
   return (
@@ -44,12 +44,21 @@ const ProjectEdit = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <Button variant="ghost" asChild className="group mb-2">
-            <Link to="/projects/manage" className="flex items-center text-muted-foreground hover:text-foreground">
+            <Link to={`/projects/${id}`} className="flex items-center text-muted-foreground hover:text-foreground">
               <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              Back to Management
+              Back to Project
             </Link>
           </Button>
           <h1 className="text-3xl font-bold">Edit Project</h1>
+        </div>
+        
+        <div className="flex justify-end mb-4">
+          <Button variant="outline" asChild>
+            <Link to={`/projects/${id}`} className="flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              View Project
+            </Link>
+          </Button>
         </div>
         
         <div className="bg-card/60 backdrop-blur-sm rounded-xl border border-border/50 shadow-lg p-6">

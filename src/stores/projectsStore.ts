@@ -14,7 +14,7 @@ type ProjectsState = {
   projects: Project[];
   nextId: number;
   getProjectById: (id: number) => Project | undefined;
-  addProject: (project: Omit<Project, 'id'>) => void;
+  addProject: (project: Omit<Project, 'id'>) => Project;
   updateProject: (id: number, project: Partial<Omit<Project, 'id'>>) => void;
   deleteProject: (id: number) => void;
 };
@@ -62,6 +62,8 @@ export const useProjectsStore = create<ProjectsState>()(
           projects: [...state.projects, newProject],
           nextId: state.nextId + 1,
         }));
+        
+        return newProject;
       },
       
       updateProject: (id, projectData) => {

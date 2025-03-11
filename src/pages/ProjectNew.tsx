@@ -28,8 +28,8 @@ const ProjectNew = () => {
   if (!mounted || !isAuthenticated) return null;
 
   const handleSubmit = (data: ProjectFormData) => {
-    addProject(data);
-    navigate('/projects/manage');
+    const newProject = addProject(data);
+    navigate(`/projects/${newProject.id}`);
   };
 
   return (
@@ -38,9 +38,9 @@ const ProjectNew = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <Button variant="ghost" asChild className="group mb-2">
-            <Link to="/projects/manage" className="flex items-center text-muted-foreground hover:text-foreground">
+            <Link to="/projects" className="flex items-center text-muted-foreground hover:text-foreground">
               <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              Back to Management
+              Back to Projects
             </Link>
           </Button>
           <h1 className="text-3xl font-bold">Create New Project</h1>
