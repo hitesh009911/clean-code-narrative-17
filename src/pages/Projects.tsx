@@ -1,36 +1,15 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
-
-const projects = [
-  {
-    id: 1,
-    title: "Personal Finance Dashboard",
-    description: "An elegant financial tracking application with data visualization and budgeting tools.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    tags: ["React", "TypeScript", "D3.js"],
-  },
-  {
-    id: 2,
-    title: "E-commerce Platform",
-    description: "A minimalist shopping experience with intuitive product browsing and checkout flow.",
-    image: "https://images.unsplash.com/photo-1524055988636-436cfa46e59e?q=80&w=2035&auto=format&fit=crop",
-    tags: ["Next.js", "Tailwind CSS", "Stripe"],
-  },
-  {
-    id: 3,
-    title: "Content Management System",
-    description: "A clean, user-friendly CMS built for writers and content creators with markdown support.",
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop",
-    tags: ["Node.js", "MongoDB", "Express"],
-  },
-];
+import { motion } from "framer-motion";
+import { useProjectsStore } from "@/stores/projectsStore";
 
 const Projects = () => {
+  const { projects } = useProjectsStore();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
@@ -78,39 +57,73 @@ const Projects = () => {
 
         <section className="py-8 md:py-16">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl font-bold mb-6 md:text-4xl">Featured Projects</h2>
-            <p className="text-muted-foreground">A selection of my recent work, showcasing my approach to problem-solving and design.</p>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold mb-6 md:text-4xl"
+            >
+              Featured Projects
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-muted-foreground"
+            >
+              A selection of my recent work, showcasing my approach to problem-solving and design.
+            </motion.p>
           </div>
           
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+          >
             {projects.map((project, index) => (
-              <div 
+              <motion.div 
                 key={project.id} 
-                className="project-card group rounded-xl border border-border bg-card overflow-hidden"
-                style={{ animationDelay: `${0.1 * index}s` }}
+                className="project-card group rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden hover:shadow-xl transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.5 }}
+                whileHover={{ y: -5 }}
               >
-                <div className="aspect-video w-full overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="h-full w-full object-cover"
-                    onLoad={() => setImageLoaded(true)}
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="mb-2 text-xl font-semibold group-hover:text-primary transition-colors">{project.title}</h3>
-                  <p className="mb-4 text-sm text-muted-foreground">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map(tag => (
-                      <span key={tag} className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-                        {tag}
-                      </span>
-                    ))}
+                <Link to={`/projects/${project.id}`} className="block">
+                  <div className="aspect-video w-full overflow-hidden">
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      onLoad={() => setImageLoaded(true)}
+                    />
                   </div>
-                </div>
-              </div>
+                  <div className="p-6">
+                    <h3 className="mb-2 text-xl font-semibold group-hover:text-primary transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="mb-4 text-sm text-muted-foreground">
+                      {project.description.length > 120 
+                        ? `${project.description.substring(0, 120)}...` 
+                        : project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map(tag => (
+                        <span key={tag} className="rounded-full bg-secondary/50 px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-border/30 flex justify-between items-center">
+                      <span className="text-xs text-muted-foreground">View details</span>
+                      <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
       </main>
     </div>

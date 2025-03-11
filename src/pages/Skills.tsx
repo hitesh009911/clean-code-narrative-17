@@ -7,6 +7,7 @@ import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import AdminLogin from "@/components/AdminLogin";
 
 // Updated skill categories with AI/ML
 const skillCategories = [
@@ -269,6 +270,30 @@ const Skills = () => {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Admin Login Section */}
+        <section id="admin" className="py-12 md:py-16 border-t border-border/30">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-2xl font-bold mb-4"
+            >
+              Administrator Area
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-muted-foreground"
+            >
+              Restricted access for content management
+            </motion.p>
+          </div>
+          
+          <AdminLogin />
         </section>
       </main>
     </div>
