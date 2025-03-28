@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key } from "lucide-react";
+import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -8,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjectsStore } from "@/stores/projectsStore";
 import PasswordChangeDialog from "@/components/PasswordChangeDialog";
+import UserImageChangeDialog from "@/components/UserImageChangeDialog";
 
 const ProjectManage = () => {
   const navigate = useNavigate();
@@ -16,9 +16,16 @@ const ProjectManage = () => {
   const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
+  const [profileImage, setProfileImage] = useState<string>("");
 
   useEffect(() => {
     setMounted(true);
+    
+    // Load profile image from localStorage if available
+    const savedImage = localStorage.getItem("userProfileImage");
+    if (savedImage) {
+      setProfileImage(savedImage);
+    }
   }, []);
 
   useEffect(() => {
@@ -48,6 +55,14 @@ const ProjectManage = () => {
     navigate('/');
   };
 
+  const handleProfileImageChange = (newImage: string) => {
+    setProfileImage(newImage);
+    toast({
+      title: "Profile Image Updated",
+      description: "Your profile image has been updated successfully.",
+    });
+  };
+
   return (
     <div className="relative min-h-screen bg-background pt-16">
       <Navigation />
@@ -64,6 +79,17 @@ const ProjectManage = () => {
           </div>
           
           <div className="flex gap-3">
+            <UserImageChangeDialog 
+              currentImage={profileImage || "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop"}
+              onImageChange={handleProfileImageChange}
+              trigger={
+                <Button variant="outline" className="flex items-center gap-2">
+                  <ImageIcon className="h-4 w-4" />
+                  Change Profile Image
+                </Button>
+              }
+            />
+            
             <PasswordChangeDialog 
               trigger={
                 <Button variant="outline" className="flex items-center gap-2">
