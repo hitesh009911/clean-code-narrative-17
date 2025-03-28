@@ -58,13 +58,13 @@ const Contact = () => {
             
             <div className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-white hover:bg-primary/20 transition-all">
               <Mail className="mr-2 h-4 w-4" />
-              <a href="mailto:hello@hiteshh.dev" className="text-sm font-medium hover:text-primary transition-colors">hello@hiteshh.dev</a>
+              <a href="mailto:hitumsyuru@gmail.com" className="text-sm font-medium hover:text-primary transition-colors">hitumsyuru@gmail.com</a>
             </div>
           </div>
           
           <div className="flex justify-center space-x-4">
             <a 
-              href="https://github.com" 
+              href="https://github.com/hitesh009911" 
               target="_blank"
               rel="noopener noreferrer" 
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-primary/20 hover:text-primary text-white hover:border-primary/30"
@@ -73,7 +73,7 @@ const Contact = () => {
               <Github className="h-5 w-5" />
             </a>
             <a 
-              href="https://linkedin.com" 
+              href="https://www.linkedin.com/in/hitesh-h-582639215/" 
               target="_blank"
               rel="noopener noreferrer" 
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-primary/20 hover:text-primary text-white hover:border-primary/30"
