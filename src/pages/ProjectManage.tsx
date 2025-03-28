@@ -1,12 +1,13 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, LogOut, Plus, Settings, Trash2 } from "lucide-react";
+import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjectsStore } from "@/stores/projectsStore";
+import PasswordChangeDialog from "@/components/PasswordChangeDialog";
 
 const ProjectManage = () => {
   const navigate = useNavigate();
@@ -63,6 +64,15 @@ const ProjectManage = () => {
           </div>
           
           <div className="flex gap-3">
+            <PasswordChangeDialog 
+              trigger={
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Key className="h-4 w-4" />
+                  Change Password
+                </Button>
+              }
+            />
+            
             <Button
               onClick={handleLogout}
               variant="outline"
