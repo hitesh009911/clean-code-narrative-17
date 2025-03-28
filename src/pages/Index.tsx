@@ -8,24 +8,19 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
 import { useAuth } from "@/contexts/AuthContext";
+import { useProfileImage } from "@/hooks/useProfileImage";
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
-  const [profileImage, setProfileImage] = useState<string>("");
+  const profileImage = useProfileImage();
   const { isAuthenticated } = useAuth();
 
   // Initialize after mount to avoid hydration issues
   useEffect(() => {
     setMounted(true);
-    
-    // Load profile image from localStorage if available
-    const savedImage = localStorage.getItem("userProfileImage");
-    if (savedImage) {
-      setProfileImage(savedImage);
-    }
     
     // Set up intersection observer for sections
     const sections = document.querySelectorAll("section[id]");
@@ -96,6 +91,26 @@ const Index = () => {
               <Button asChild variant="outline" className="rounded-full">
                 <a href="/contact">Get In Touch</a>
               </Button>
+            </div>
+            
+            {/* Social Links */}
+            <div className="mt-8 flex justify-center md:justify-start space-x-6 opacity-0 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+              <a href="https://github.com/hitesh009911" target="_blank" rel="noopener noreferrer" 
+                 className="text-gray-500 hover:text-primary transition-colors">
+                <Github className="w-6 h-6" />
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" 
+                 className="text-gray-500 hover:text-primary transition-colors">
+                <Linkedin className="w-6 h-6" />
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" 
+                 className="text-gray-500 hover:text-primary transition-colors">
+                <Twitter className="w-6 h-6" />
+              </a>
+              <a href="mailto:youremail@example.com" 
+                 className="text-gray-500 hover:text-primary transition-colors">
+                <Mail className="w-6 h-6" />
+              </a>
             </div>
           </div>
         </section>
