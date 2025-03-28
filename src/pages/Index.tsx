@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin, Mail, Menu, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail, Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
@@ -102,10 +102,6 @@ const Index = () => {
               <a href="https://www.linkedin.com/in/hitesh-h-582639215/" target="_blank" rel="noopener noreferrer" 
                  className="text-gray-500 hover:text-primary transition-colors">
                 <Linkedin className="w-6 h-6" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" 
-                 className="text-gray-500 hover:text-primary transition-colors">
-                <Twitter className="w-6 h-6" />
               </a>
               <a href="mailto:hitumsyuru@gmail.com" 
                  className="text-gray-500 hover:text-primary transition-colors">

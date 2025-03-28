@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { ArrowLeft, Github, Linkedin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -80,15 +80,6 @@ const Contact = () => {
               aria-label="LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
-            </a>
-            <a 
-              href="https://twitter.com" 
-              target="_blank"
-              rel="noopener noreferrer" 
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-primary/20 hover:text-primary text-white hover:border-primary/30"
-              aria-label="Twitter"
-            >
-              <Twitter className="h-5 w-5" />
             </a>
           </div>
         </section>
