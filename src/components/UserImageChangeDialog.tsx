@@ -68,6 +68,10 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
       // Save the image URL or base64 data to localStorage
       localStorage.setItem("userProfileImage", newImage);
       
+      // Dispatch both events to ensure all components are updated
+      window.dispatchEvent(new Event('storage'));
+      window.dispatchEvent(new Event('storage-local'));
+      
       // Update parent component
       onImageChange(newImage);
       

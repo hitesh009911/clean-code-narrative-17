@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useProjectsStore } from "@/stores/projectsStore";
 import PasswordChangeDialog from "@/components/PasswordChangeDialog";
 import UserImageChangeDialog from "@/components/UserImageChangeDialog";
+import { useProfileImage } from "@/hooks/useProfileImage";
 
 const ProjectManage = () => {
   const navigate = useNavigate();
@@ -16,16 +17,10 @@ const ProjectManage = () => {
   const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
-  const [profileImage, setProfileImage] = useState<string>("");
+  const profileImage = useProfileImage();
 
   useEffect(() => {
     setMounted(true);
-    
-    // Load profile image from localStorage if available
-    const savedImage = localStorage.getItem("userProfileImage");
-    if (savedImage) {
-      setProfileImage(savedImage);
-    }
   }, []);
 
   useEffect(() => {
@@ -56,12 +51,13 @@ const ProjectManage = () => {
   };
 
   const handleProfileImageChange = (newImage: string) => {
-    setProfileImage(newImage);
     toast({
       title: "Profile Image Updated",
       description: "Your profile image has been updated successfully.",
     });
   };
+
+  const defaultImage = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop";
 
   return (
     <div className="relative min-h-screen bg-background pt-16">
@@ -80,7 +76,7 @@ const ProjectManage = () => {
           
           <div className="flex gap-3">
             <UserImageChangeDialog 
-              currentImage={profileImage || "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop"}
+              currentImage={profileImage || defaultImage}
               onImageChange={handleProfileImageChange}
               trigger={
                 <Button variant="outline" className="flex items-center gap-2">

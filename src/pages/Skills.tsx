@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowLeft, Code, FileCode, Monitor, Database, Terminal, Server, Github, Layers, Zap, Cpu, Globe, Award, BrainCircuit, Bot, Sparkles, LineChart } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -8,8 +7,8 @@ import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import AdminLogin from "@/components/AdminLogin";
+import { useProfileImage } from "@/hooks/useProfileImage";
 
-// Updated skill categories with AI/ML
 const skillCategories = [
   {
     title: "Frontend Development",
@@ -49,7 +48,6 @@ const skillCategories = [
   },
 ];
 
-// Updated stats with 1+ year
 const developerStats = [
   { value: "1+", label: "Year Experience", icon: <Award className="h-5 w-5" />, color: "from-purple-500 to-indigo-500" },
   { value: "35+", label: "Projects Completed", icon: <Layers className="h-5 w-5" />, color: "from-pink-500 to-rose-500" },
@@ -95,6 +93,7 @@ const Skills = () => {
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const profileImage = useProfileImage();
 
   useEffect(() => {
     setMounted(true);
@@ -112,9 +111,10 @@ const Skills = () => {
     setSplineError(true);
   };
 
+  const defaultImage = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop";
+
   return (
     <div className="relative min-h-screen bg-background pt-16">
-      {/* Spline Background */}
       <div className="fixed inset-0 z-0">
         {!splineError && (
           <Spline 
@@ -136,12 +136,11 @@ const Skills = () => {
           </Button>
         </div>
         
-        {/* About Me Section with Image */}
         <section className="py-8 md:py-12 mb-8">
           <div className="max-w-3xl mx-auto mb-12 flex flex-col md:flex-row items-center gap-8">
             <div className="relative h-64 w-64 overflow-hidden rounded-full border border-gray-100 shadow-lg transition-all md:h-80 md:w-80 opacity-0 animate-fade-in-delayed">
               <img
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
+                src={profileImage || defaultImage}
                 alt="Hitesh H - Developer"
                 className={cn(
                   "h-full w-full object-cover transition-all",
@@ -173,7 +172,6 @@ const Skills = () => {
           </div>
         </section>
 
-        {/* Modern KPI Stats Section - Redesigned for better visual appeal */}
         <section className="py-8 md:py-12">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -204,7 +202,6 @@ const Skills = () => {
           </motion.div>
         </section>
         
-        {/* Skills Categories Section */}
         <section className="py-8 md:py-16">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <motion.h2 
@@ -272,7 +269,6 @@ const Skills = () => {
           </div>
         </section>
 
-        {/* Admin Login Section */}
         <section id="admin" className="py-12 md:py-16 border-t border-border/30">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <motion.h2 
