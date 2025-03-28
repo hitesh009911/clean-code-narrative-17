@@ -3,13 +3,11 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin, Mail, Menu, Twitter, ImageIcon } from "lucide-react";
+import { Github, Linkedin, Mail, Menu, Twitter } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
-import UserImageChangeDialog from "@/components/UserImageChangeDialog";
 import { useAuth } from "@/contexts/AuthContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
@@ -59,10 +57,6 @@ const Index = () => {
     setSplineError(true);
   };
 
-  const handleProfileImageChange = (newImage: string) => {
-    setProfileImage(newImage);
-  };
-
   return (
     <div className="relative min-h-screen bg-background">
       {/* Spline Background */}
@@ -102,36 +96,6 @@ const Index = () => {
               <Button asChild variant="outline" className="rounded-full">
                 <a href="/contact">Get In Touch</a>
               </Button>
-            </div>
-          </div>
-          
-          {/* Profile Image */}
-          <div className="mt-12 md:mt-0 opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <div className="relative">
-              <Avatar className="w-36 h-36 md:w-48 md:h-48 ring-4 ring-background shadow-xl">
-                <AvatarImage 
-                  src={profileImage || "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop"} 
-                  alt="Profile Image"
-                  className="object-cover"
-                />
-                <AvatarFallback>HH</AvatarFallback>
-              </Avatar>
-              
-              {isAuthenticated && (
-                <UserImageChangeDialog 
-                  currentImage={profileImage || "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop"}
-                  onImageChange={handleProfileImageChange}
-                  trigger={
-                    <Button 
-                      size="sm"
-                      className="absolute bottom-0 right-0 rounded-full"
-                      variant="secondary"
-                    >
-                      <ImageIcon className="h-4 w-4" />
-                    </Button>
-                  }
-                />
-              )}
             </div>
           </div>
         </section>
