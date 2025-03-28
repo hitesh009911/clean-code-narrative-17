@@ -144,7 +144,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           
           {useCustomImage ? (
             <>
-              <div className="mt-2 rounded-md overflow-hidden aspect-video w-full max-w-md mx-auto">
+              <div className="group relative mt-2 rounded-md overflow-hidden aspect-video w-full max-w-md mx-auto">
                 <img 
                   src={profileImagePreview || formData.image} 
                   alt="Project preview" 
@@ -158,21 +158,32 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                     });
                   }}
                 />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleImageClick}
+                    className="mr-2"
+                  >
+                    Change
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      setUseCustomImage(false);
+                      setFormData(prev => ({ ...prev, image: '' }));
+                      setProfileImagePreview('');
+                    }}
+                  >
+                    Remove
+                  </Button>
+                </div>
               </div>
               <div className="flex justify-between items-center mt-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setUseCustomImage(false);
-                    setFormData(prev => ({ ...prev, image: '' }));
-                    setProfileImagePreview('');
-                  }}
-                  className="text-xs text-destructive"
-                >
-                  Remove image
-                </Button>
+                <span className="text-xs text-muted-foreground">Hover over image to edit</span>
                 <Input
                   name="image"
                   value={formData.image}

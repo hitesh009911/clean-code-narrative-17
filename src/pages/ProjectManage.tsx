@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Plus, Settings, Trash2 } from "lucide-react";
+import { ArrowLeft, LogOut, Plus, Settings, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -66,7 +66,9 @@ const ProjectManage = () => {
             <Button
               onClick={handleLogout}
               variant="outline"
+              className="flex items-center gap-2"
             >
+              <LogOut className="h-4 w-4" />
               Logout
             </Button>
             
