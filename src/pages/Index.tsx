@@ -76,7 +76,7 @@ const Index = () => {
         >
           <div className="max-w-md text-center md:text-left">
             <div className="mb-2 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary opacity-0 animate-fade-in">
-              Frontend Developer
+              Developer
             </div>
             <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               Hitesh<span className="text-primary">H</span>
