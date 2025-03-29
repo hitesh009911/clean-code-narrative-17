@@ -10,15 +10,18 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// In a real app, we would use a secure authentication system
-// This is a simplified version for demonstration
-const ADMIN_PASSWORD = "hitesh123"; // In a real app, this would be hashed and stored securely
+// Default password - in a real app, this would be hashed and stored securely
+const DEFAULT_PASSWORD = "hitesh123";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState(ADMIN_PASSWORD);
+  // Get the stored password from localStorage or use the default
+  const [password, setPassword] = useState(() => {
+    const storedPassword = localStorage.getItem('adminPassword');
+    return storedPassword || DEFAULT_PASSWORD;
+  });
 
-  // Check local storage on initial load
+  // Check local storage on initial load for auth status
   useEffect(() => {
     const authStatus = localStorage.getItem('cmsAuth');
     setIsAuthenticated(authStatus === 'true');
@@ -40,8 +43,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updatePassword = (currentPassword: string, newPassword: string) => {
     if (currentPassword === password) {
+      // Save password to both state and localStorage
       setPassword(newPassword);
-      // In a real app, we would update the password in a secure database
+      localStorage.setItem('adminPassword', newPassword);
       return true;
     }
     return false;
