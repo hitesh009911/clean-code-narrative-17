@@ -33,7 +33,7 @@ const Contact = () => {
       <div className="fixed inset-0 z-0">
         {!splineError && (
           <Spline 
-            scene="https://prod.spline.design/Do8PURpymwu4rsFQ/scene.splinecode" 
+            scene="https://prod.spline.design/oEVXMlV5gve7-WHJ/scene.splinecode" 
             onLoad={handleSplineLoad}
             onError={handleSplineError}
           />
