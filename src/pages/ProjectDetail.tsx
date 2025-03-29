@@ -91,7 +91,7 @@ const ProjectDetail = () => {
             </div>
             
             <div className="text-lg text-muted-foreground mb-8">
-              {linkify(project.description, true)}
+              {linkify(project.description)}
             </div>
             
             <div className="flex flex-wrap gap-2 mb-8">
