@@ -7,6 +7,7 @@ import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjectsStore } from "@/stores/projectsStore";
+import { linkify } from "@/utils/linkify";
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -90,7 +91,9 @@ const ProjectDetail = () => {
               )}
             </div>
             
-            <p className="text-lg text-muted-foreground mb-8">{project.description}</p>
+            <p className="text-lg text-muted-foreground mb-8">
+              {linkify(project.description)}
+            </p>
             
             <div className="flex flex-wrap gap-2 mb-8">
               {project.tags.map(tag => (
