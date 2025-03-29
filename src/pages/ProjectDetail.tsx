@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowLeft, Edit, Github, Star } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -92,7 +91,7 @@ const ProjectDetail = () => {
             </div>
             
             <div className="text-lg text-muted-foreground mb-8">
-              {linkify(project.description)}
+              {linkify(project.description, true)}
             </div>
             
             <div className="flex flex-wrap gap-2 mb-8">
