@@ -1,17 +1,17 @@
-
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Image, ImagePlus } from 'lucide-react';
+import { Image, ImagePlus, Star } from 'lucide-react';
 
 export type ProjectFormData = {
   id?: number;
   title: string;
   description: string;
   image: string;
+  githubUrl?: string;
   tags: string[];
 };
 
@@ -22,7 +22,7 @@ type ProjectFormProps = {
 };
 
 const ProjectForm: React.FC<ProjectFormProps> = ({ 
-  initialData = { title: '', description: '', image: '', tags: [] },
+  initialData = { title: '', description: '', image: '', githubUrl: '', tags: [] },
   onSubmit,
   isEdit = false
 }) => {
@@ -217,6 +217,21 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               />
             </>
           )}
+        </div>
+        
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <label htmlFor="githubUrl" className="text-sm font-medium">GitHub URL</label>
+            <span className="text-muted-foreground text-xs">(Optional)</span>
+            <Star className="h-4 w-4 text-amber-400" />
+          </div>
+          <Input
+            id="githubUrl"
+            name="githubUrl"
+            value={formData.githubUrl || ''}
+            onChange={handleChange}
+            placeholder="https://github.com/username/repository"
+          />
         </div>
         
         <div className="space-y-2">

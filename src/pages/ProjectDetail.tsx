@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Edit, ExternalLink } from "lucide-react";
+import { ArrowLeft, Edit, Github, Star } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -107,10 +107,19 @@ const ProjectDetail = () => {
                 </Link>
               </Button>
               
-              <Button className="flex items-center gap-2">
-                <ExternalLink className="h-4 w-4" />
-                <span>Live Demo</span>
-              </Button>
+              {project.githubUrl ? (
+                <Button asChild className="flex items-center gap-2">
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" />
+                    <span>GitHub</span>
+                  </a>
+                </Button>
+              ) : (
+                <div className="flex items-center text-muted-foreground text-sm">
+                  <Star className="h-4 w-4 text-amber-400 mr-2" />
+                  <span>GitHub link not available</span>
+                </div>
+              )}
             </div>
           </div>
         </article>

@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon } from "lucide-react";
+import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon, Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -132,6 +133,7 @@ const ProjectManage = () => {
                       <th className="px-4 py-3 text-left">ID</th>
                       <th className="px-4 py-3 text-left">Title</th>
                       <th className="px-4 py-3 text-left">Tags</th>
+                      <th className="px-4 py-3 text-left">GitHub</th>
                       <th className="px-4 py-3 text-right">Actions</th>
                     </tr>
                   </thead>
@@ -148,6 +150,21 @@ const ProjectManage = () => {
                               </span>
                             ))}
                           </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          {project.githubUrl ? (
+                            <a 
+                              href={project.githubUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center text-sm text-primary hover:underline"
+                            >
+                              <Github className="h-3 w-3 mr-1" />
+                              Repository
+                            </a>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex justify-end gap-2">

@@ -7,6 +7,7 @@ export type Project = {
   title: string;
   description: string;
   image: string;
+  githubUrl?: string;
   tags: string[];
 };
 
@@ -26,6 +27,7 @@ const initialProjects = [
     title: "Personal Finance Dashboard",
     description: "An elegant financial tracking application with data visualization and budgeting tools.",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+    githubUrl: "https://github.com/hitesh009911/finance-dashboard",
     tags: ["React", "TypeScript", "D3.js"],
   },
   {
@@ -33,6 +35,7 @@ const initialProjects = [
     title: "E-commerce Platform",
     description: "A minimalist shopping experience with intuitive product browsing and checkout flow.",
     image: "https://images.unsplash.com/photo-1524055988636-436cfa46e59e?q=80&w=2035&auto=format&fit=crop",
+    githubUrl: "https://github.com/hitesh009911/ecommerce-platform",
     tags: ["Next.js", "Tailwind CSS", "Stripe"],
   },
   {
@@ -40,6 +43,7 @@ const initialProjects = [
     title: "Content Management System",
     description: "A clean, user-friendly CMS built for writers and content creators with markdown support.",
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop",
+    githubUrl: "https://github.com/hitesh009911/content-management-system",
     tags: ["Node.js", "MongoDB", "Express"],
   },
 ];
