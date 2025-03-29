@@ -3,7 +3,6 @@ import React from 'react';
 
 /**
  * Converts plain text URLs in a string to clickable links
- * The excludeGithubUrls parameter has been removed as we now want all links to be clickable
  */
 export function linkify(text: string): React.ReactNode[] {
   if (!text) return [text];
@@ -11,33 +10,43 @@ export function linkify(text: string): React.ReactNode[] {
   // Regular expression to match URLs
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   
-  // Split the text by URLs
-  const parts = text.split(urlRegex);
-  // Match all URLs in the text
-  const matches = text.match(urlRegex) || [];
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+
+  // Find all URL matches
+  const matches = text.matchAll(urlRegex);
   
-  // Combine parts and matches
-  const result: React.ReactNode[] = [];
-  
-  parts.forEach((part, i) => {
-    // Add the text part
-    if (part) result.push(part);
-    
-    // Add the URL part (if there is one)
-    if (matches[i]) {
-      result.push(
-        <a 
-          key={i}
-          href={matches[i]} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-primary hover:underline"
-        >
-          {matches[i]}
-        </a>
-      );
+  for (const match of matches) {
+    const url = match[0];
+    const index = match.index || 0;
+
+    // Add text before the URL
+    if (index > lastIndex) {
+      parts.push(text.slice(lastIndex, index));
     }
-  });
+
+    // Add clickable URL link
+    parts.push(
+      <a 
+        key={index}
+        href={url} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-primary hover:underline"
+      >
+        {url}
+      </a>
+    );
+
+    // Update last index
+    lastIndex = index + url.length;
+  }
+
+  // Add any remaining text after the last URL
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
   
-  return result;
+  return parts;
 }
+
