@@ -91,9 +91,9 @@ const ProjectDetail = () => {
               )}
             </div>
             
-            <p className="text-lg text-muted-foreground mb-8">
+            <div className="text-lg text-muted-foreground mb-8">
               {linkify(project.description)}
-            </p>
+            </div>
             
             <div className="flex flex-wrap gap-2 mb-8">
               {project.tags.map(tag => (

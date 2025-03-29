@@ -7,12 +7,14 @@ import Navigation from "@/components/Navigation";
 import ProjectForm, { ProjectFormData } from "@/components/ProjectForm";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjectsStore } from "@/stores/projectsStore";
+import { useToast } from "@/hooks/use-toast";
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { getProjectById, updateProject } = useProjectsStore();
+  const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
   const project = id ? getProjectById(Number(id)) : null;
@@ -25,17 +27,28 @@ const ProjectEdit = () => {
     if (mounted) {
       if (!isAuthenticated) {
         navigate('/');
-      } else if (!project) {
+      } else if (id && !project) {
+        toast({
+          title: "Project not found",
+          description: "The project you're trying to edit doesn't exist.",
+          variant: "destructive"
+        });
         navigate('/projects/manage');
       }
     }
-  }, [mounted, isAuthenticated, project, navigate]);
+  }, [mounted, isAuthenticated, project, navigate, id, toast]);
 
   if (!mounted || !isAuthenticated || !project) return null;
 
   const handleSubmit = (data: ProjectFormData) => {
-    updateProject(Number(id), data);
-    navigate(`/projects/${id}`);
+    if (id) {
+      updateProject(Number(id), data);
+      toast({
+        title: "Project Updated",
+        description: "Your project has been updated successfully."
+      });
+      navigate(`/projects/${id}`);
+    }
   };
 
   return (
