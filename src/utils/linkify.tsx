@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 /**
  * Converts plain text URLs in a string to clickable links
  */
