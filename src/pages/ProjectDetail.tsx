@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ArrowLeft, Edit, Github, Star } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -115,7 +116,6 @@ const ProjectDetail = () => {
                 </Button>
               ) : (
                 <div className="flex items-center text-muted-foreground text-sm">
-                  <Star className="h-4 w-4 text-amber-400 mr-2" />
                   <span>GitHub link not available</span>
                 </div>
               )}

@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -96,7 +97,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="title" className="text-sm font-medium">Project Title</label>
+          <label htmlFor="title" className="text-sm font-medium flex items-center gap-1">
+            Project Title <Star className="h-3 w-3 text-amber-400" fill="currentColor" />
+          </label>
           <Input
             id="title"
             name="title"
@@ -108,7 +111,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         </div>
         
         <div className="space-y-2">
-          <label htmlFor="description" className="text-sm font-medium">Description</label>
+          <label htmlFor="description" className="text-sm font-medium flex items-center gap-1">
+            Description <Star className="h-3 w-3 text-amber-400" fill="currentColor" />
+          </label>
           <Textarea
             id="description"
             name="description"
@@ -122,7 +127,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label htmlFor="image" className="text-sm font-medium">Project Image</label>
+            <label htmlFor="image" className="text-sm font-medium flex items-center gap-1">
+              Project Image <Star className="h-3 w-3 text-amber-400" fill="currentColor" />
+            </label>
             <Button 
               type="button" 
               variant="outline" 
@@ -223,7 +230,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           <div className="flex items-center gap-2">
             <label htmlFor="githubUrl" className="text-sm font-medium">GitHub URL</label>
             <span className="text-muted-foreground text-xs">(Optional)</span>
-            <Star className="h-4 w-4 text-amber-400" />
           </div>
           <Input
             id="githubUrl"
@@ -235,7 +241,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         </div>
         
         <div className="space-y-2">
-          <label htmlFor="tags" className="text-sm font-medium">Tags (comma-separated)</label>
+          <label htmlFor="tags" className="text-sm font-medium flex items-center gap-1">
+            Tags (comma-separated) <Star className="h-3 w-3 text-amber-400" fill="currentColor" />
+          </label>
           <Input
             id="tags"
             name="tags"
