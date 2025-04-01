@@ -30,5 +30,5 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  base: './' // This ensures all assets are loaded with relative paths
+  base: '' // Changed from './' to '' to handle root path properly
 }));

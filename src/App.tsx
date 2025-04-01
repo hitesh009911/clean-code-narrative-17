@@ -33,7 +33,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <HashRouter>
+          <HashRouter basename="">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/skills" element={<Skills />} />
