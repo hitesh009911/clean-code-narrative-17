@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    chunkSizeWarningLimit: 5000, // Increase chunk size warning limit to 5000kb
+    chunkSizeWarningLimit: 5000,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -30,5 +30,5 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  base: '',  // Use empty string for proper asset paths
+  base: '/', // Set base to '/' for Vercel deployment
 }));
