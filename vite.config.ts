@@ -30,5 +30,5 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  base: '' // Changed from './' to '' to handle root path properly
+  base: '',  // Use empty string for proper asset paths
 }));
