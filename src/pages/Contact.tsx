@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
+import SplineFallback from "@/components/SplineFallback";
 
 const Contact = () => {
   const [mounted, setMounted] = useState(false);
@@ -38,6 +39,7 @@ const Contact = () => {
             onError={handleSplineError}
           />
         )}
+        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} />
       </div>
 
       <Navigation />

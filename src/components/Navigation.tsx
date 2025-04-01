@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
@@ -11,22 +12,22 @@ const Navigation = () => {
     <nav className="fixed left-0 right-0 top-4 z-50 mx-auto max-w-screen-lg px-4">
       <div className="mx-auto flex items-center justify-between rounded-full bg-background/80 px-6 py-3 backdrop-blur-md border-0 shadow-md">
         <div className="flex items-center">
-          <a href="/" className="text-xl font-bold">
+          <Link to="/" className="text-xl font-bold">
             Hitesh<span className="text-primary">H</span>
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center space-x-8 md:flex">
-          <a href="/skills" className="nav-link text-sm">
+          <Link to="/skills" className="nav-link text-sm">
             About Me
-          </a>
-          <a href="/projects" className="nav-link text-sm">
+          </Link>
+          <Link to="/projects" className="nav-link text-sm">
             Projects
-          </a>
-          <a href="/contact" className="nav-link text-sm">
+          </Link>
+          <Link to="/contact" className="nav-link text-sm">
             Contact
-          </a>
+          </Link>
           <ThemeToggle />
         </div>
 
@@ -48,27 +49,27 @@ const Navigation = () => {
       {isOpen && (
         <div className="mt-2 rounded-xl border-0 bg-background/95 px-4 py-4 backdrop-blur-md shadow-md md:hidden">
           <div className="flex flex-col space-y-4">
-            <a
-              href="/skills"
+            <Link
+              to="/skills"
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
               About Me
-            </a>
-            <a
-              href="/projects"
+            </Link>
+            <Link
+              to="/projects"
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
               Projects
-            </a>
-            <a
-              href="/contact"
+            </Link>
+            <Link
+              to="/contact"
               className="text-sm"
               onClick={() => setIsOpen(false)}
             >
               Contact
-            </a>
+            </Link>
           </div>
         </div>
       )}

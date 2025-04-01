@@ -1,12 +1,15 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
-import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import { useProjectsStore } from "@/stores/projectsStore";
+import SplineFallback from "@/components/SplineFallback";
+
+// Lazy load Spline component to reduce initial load time
+const Spline = lazy(() => import('@splinetool/react-spline'));
 
 const Projects = () => {
   const { projects } = useProjectsStore();
@@ -35,12 +38,15 @@ const Projects = () => {
     <div className="relative min-h-screen bg-background pt-16">
       {/* Spline Background */}
       <div className="fixed inset-0 z-0">
+        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} />
         {!splineError && (
-          <Spline 
-            scene="https://prod.spline.design/C8o-RCpz0hHQdBa8/scene.splinecode" 
-            onLoad={handleSplineLoad}
-            onError={handleSplineError}
-          />
+          <Suspense fallback={null}>
+            <Spline 
+              scene="https://prod.spline.design/C8o-RCpz0hHQdBa8/scene.splinecode" 
+              onLoad={handleSplineLoad}
+              onError={handleSplineError}
+            />
+          </Suspense>
         )}
       </div>
 

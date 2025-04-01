@@ -23,7 +23,7 @@ const ProjectDetail = () => {
   const [splineError, setSplineError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const project = getProjectById(Number(id));
+  const project = id ? getProjectById(Number(id)) : null;
 
   useEffect(() => {
     setMounted(true);
@@ -67,9 +67,9 @@ const ProjectDetail = () => {
       <main className="relative z-10 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="pt-8">
           <Button variant="ghost" asChild className="group mb-6">
-            <Link to="/projects/manage" className="flex items-center text-muted-foreground hover:text-foreground">
+            <Link to="/projects" className="flex items-center text-muted-foreground hover:text-foreground">
               <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              Back to Project Management
+              Back to Projects
             </Link>
           </Button>
         </div>
@@ -111,7 +111,7 @@ const ProjectDetail = () => {
             
             <div className="flex justify-between items-center pt-6 border-t border-border/30">
               <Button variant="outline" asChild>
-                <Link to="/projects/manage">
+                <Link to="/projects">
                   View All Projects
                 </Link>
               </Button>

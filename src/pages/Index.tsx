@@ -9,6 +9,7 @@ import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileImage } from "@/hooks/useProfileImage";
+import SplineFallback from "@/components/SplineFallback";
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
@@ -63,6 +64,7 @@ const Index = () => {
             onError={handleSplineError}
           />
         )}
+        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} />
       </div>
       
       {/* Navigation */}
@@ -86,10 +88,10 @@ const Index = () => {
             </p>
             <div className="space-x-4 opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <Button asChild className="rounded-full">
-                <a href="/projects">View My Work</a>
+                <Link to="/projects">View My Work</Link>
               </Button>
               <Button asChild variant="outline" className="rounded-full">
-                <a href="/contact">Get In Touch</a>
+                <Link to="/contact">Get In Touch</Link>
               </Button>
             </div>
             
