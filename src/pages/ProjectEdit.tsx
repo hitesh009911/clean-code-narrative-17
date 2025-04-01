@@ -47,7 +47,8 @@ const ProjectEdit = () => {
         title: "Project Updated",
         description: "Your project has been updated successfully."
       });
-      navigate(`/projects/${id}`);
+      // Changed navigation from project detail to project management
+      navigate('/projects/manage');
     }
   };
 
