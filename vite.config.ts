@@ -30,5 +30,5 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  base: './' // Add this line for GitHub Pages compatibility
+  base: './' // This ensures all assets are loaded with relative paths
 }));

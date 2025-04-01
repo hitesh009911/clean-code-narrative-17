@@ -19,7 +19,10 @@ const NotFound = () => {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center bg-card/80 backdrop-blur-sm p-8 rounded-xl border border-border/50 shadow-lg">
         <h1 className="text-6xl font-bold mb-4">404</h1>
-        <p className="text-xl text-muted-foreground mb-8">Oops! Page not found</p>
+        <p className="text-xl text-muted-foreground mb-4">Oops! Page not found</p>
+        <p className="text-muted-foreground mb-8">
+          The requested URL <code className="bg-muted p-1 rounded">{location.pathname}</code> could not be found.
+        </p>
         <Button asChild className="flex items-center">
           <Link to="/">
             <Home className="mr-2 h-4 w-4" />

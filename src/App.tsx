@@ -16,7 +16,15 @@ import ProjectEdit from "./pages/ProjectEdit";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+// Create a new query client with default stale time to improve caching
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
