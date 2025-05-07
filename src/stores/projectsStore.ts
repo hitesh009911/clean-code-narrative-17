@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { persist, StateStorage, StorageValue } from 'zustand/middleware';
+import { persist, createJSONStorage, PersistStorage } from 'zustand/middleware';
 
 export type Project = {
   id: number;
@@ -48,37 +48,50 @@ const initialProjects = [
   },
 ];
 
-// Create a custom storage object that works with both localStorage and sessionStorage
-const dualStorage: StateStorage = {
-  getItem: (name): StorageValue<ProjectsState> | null => {
-    // Try to get from localStorage first, then sessionStorage
-    const lsData = localStorage.getItem(name);
-    if (lsData) {
-      // Also sync to sessionStorage to ensure consistency
-      sessionStorage.setItem(name, lsData);
-      return JSON.parse(lsData);
+// Create a custom storage that works with both localStorage and sessionStorage
+const dualStorage: PersistStorage<ProjectsState> = {
+  getItem: (name) => {
+    try {
+      // Try to get from localStorage first, then sessionStorage
+      const lsData = localStorage.getItem(name);
+      if (lsData) {
+        // Also sync to sessionStorage to ensure consistency
+        sessionStorage.setItem(name, lsData);
+        return JSON.parse(lsData);
+      }
+      
+      const ssData = sessionStorage.getItem(name);
+      if (ssData) {
+        // Sync back to localStorage
+        localStorage.setItem(name, ssData);
+        return JSON.parse(ssData);
+      }
+      
+      return null;
+    } catch (e) {
+      console.error('Error getting data from storage', e);
+      return null;
     }
-    
-    const ssData = sessionStorage.getItem(name);
-    if (ssData) {
-      // Sync back to localStorage
-      localStorage.setItem(name, ssData);
-      return JSON.parse(ssData);
-    }
-    
-    return null;
   },
   
   setItem: (name, value) => {
-    const stringValue = JSON.stringify(value);
-    // Store in both storage types for persistence
-    localStorage.setItem(name, stringValue);
-    sessionStorage.setItem(name, stringValue);
+    try {
+      const stringValue = JSON.stringify(value);
+      // Store in both storage types for persistence
+      localStorage.setItem(name, stringValue);
+      sessionStorage.setItem(name, stringValue);
+    } catch (e) {
+      console.error('Error setting data in storage', e);
+    }
   },
   
   removeItem: (name) => {
-    localStorage.removeItem(name);
-    sessionStorage.removeItem(name);
+    try {
+      localStorage.removeItem(name);
+      sessionStorage.removeItem(name);
+    } catch (e) {
+      console.error('Error removing data from storage', e);
+    }
   }
 };
 
