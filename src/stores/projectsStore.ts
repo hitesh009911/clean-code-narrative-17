@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, StateStorage, StorageValue } from 'zustand/middleware';
 
 export type Project = {
   id: number;
@@ -48,6 +48,40 @@ const initialProjects = [
   },
 ];
 
+// Create a custom storage object that works with both localStorage and sessionStorage
+const dualStorage: StateStorage = {
+  getItem: (name): StorageValue<ProjectsState> | null => {
+    // Try to get from localStorage first, then sessionStorage
+    const lsData = localStorage.getItem(name);
+    if (lsData) {
+      // Also sync to sessionStorage to ensure consistency
+      sessionStorage.setItem(name, lsData);
+      return JSON.parse(lsData);
+    }
+    
+    const ssData = sessionStorage.getItem(name);
+    if (ssData) {
+      // Sync back to localStorage
+      localStorage.setItem(name, ssData);
+      return JSON.parse(ssData);
+    }
+    
+    return null;
+  },
+  
+  setItem: (name, value) => {
+    const stringValue = JSON.stringify(value);
+    // Store in both storage types for persistence
+    localStorage.setItem(name, stringValue);
+    sessionStorage.setItem(name, stringValue);
+  },
+  
+  removeItem: (name) => {
+    localStorage.removeItem(name);
+    sessionStorage.removeItem(name);
+  }
+};
+
 export const useProjectsStore = create<ProjectsState>()(
   persist(
     (set, get) => ({
@@ -88,36 +122,7 @@ export const useProjectsStore = create<ProjectsState>()(
     }),
     {
       name: 'portfolio-projects-storage',
-      // Change the storage configuration to use both localStorage and sessionStorage
-      storage: {
-        getItem: (name) => {
-          // Try to get from localStorage first, then sessionStorage
-          const lsData = localStorage.getItem(name);
-          if (lsData) {
-            // Also sync to sessionStorage to ensure consistency
-            sessionStorage.setItem(name, lsData);
-            return lsData;
-          }
-          
-          const ssData = sessionStorage.getItem(name);
-          if (ssData) {
-            // Sync back to localStorage
-            localStorage.setItem(name, ssData);
-            return ssData;
-          }
-          
-          return null;
-        },
-        setItem: (name, value) => {
-          // Store in both storage types for persistence
-          localStorage.setItem(name, value);
-          sessionStorage.setItem(name, value);
-        },
-        removeItem: (name) => {
-          localStorage.removeItem(name);
-          sessionStorage.removeItem(name);
-        }
-      }
+      storage: dualStorage
     }
   )
 );
