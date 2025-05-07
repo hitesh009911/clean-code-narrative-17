@@ -68,7 +68,10 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
             lastModified: selectedFile.lastModified,
             uploadedAt: new Date().toISOString()
           };
+          
+          // Store in both localStorage and sessionStorage for persistence
           localStorage.setItem("userProfileImageInfo", JSON.stringify(fileInfo));
+          sessionStorage.setItem("userProfileImageInfo", JSON.stringify(fileInfo));
         }
       } else if (tabValue === "url" && imageUrl) {
         newImage = imageUrl;
@@ -81,8 +84,9 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
         return;
       }
       
-      // Save the image URL or base64 data to localStorage
+      // Save the image URL or base64 data to both storage types
       localStorage.setItem("userProfileImage", newImage);
+      sessionStorage.setItem("userProfileImage", newImage); 
       
       // Dispatch both events to ensure all components are updated
       window.dispatchEvent(new Event('storage'));

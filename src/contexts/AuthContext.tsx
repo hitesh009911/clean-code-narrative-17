@@ -31,6 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (attemptedPassword === password) {
       setIsAuthenticated(true);
       localStorage.setItem('cmsAuth', 'true');
+      sessionStorage.setItem('cmsAuth', 'true'); // Add to session storage too
       return true;
     }
     return false;
@@ -39,13 +40,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('cmsAuth');
+    sessionStorage.removeItem('cmsAuth');
   };
 
   const updatePassword = (currentPassword: string, newPassword: string) => {
     if (currentPassword === password) {
-      // Save password to both state and localStorage
+      // Save password to both state and storage
       setPassword(newPassword);
       localStorage.setItem('adminPassword', newPassword);
+      sessionStorage.setItem('adminPassword', newPassword); // Add to session storage too
       return true;
     }
     return false;

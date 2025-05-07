@@ -49,6 +49,24 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     setFormData(prev => ({ ...prev, tags: tagsArray }));
   };
 
+  const saveFileInfo = (file: File, projectId: number | string) => {
+    if (file) {
+      const projectFileInfo = {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        lastModified: file.lastModified,
+        uploadedAt: new Date().toISOString()
+      };
+      
+      // Store in both localStorage and sessionStorage
+      const storageKey = `projectImage_${projectId}`;
+      const infoJSON = JSON.stringify(projectFileInfo);
+      localStorage.setItem(storageKey, infoJSON);
+      sessionStorage.setItem(storageKey, infoJSON);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -82,17 +100,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
     // Store file information if available
     if (selectedFile) {
-      // In a real app with backend, you would upload the file here
-      // For now, we're storing file metadata in localStorage just for demonstration
-      const projectFileInfo = {
-        name: selectedFile.name,
-        type: selectedFile.type,
-        size: selectedFile.size,
-        lastModified: selectedFile.lastModified,
-        uploadedAt: new Date().toISOString()
-      };
-      
-      localStorage.setItem(`projectImage_${formData.id || 'new'}`, JSON.stringify(projectFileInfo));
+      // Use our new function to save to both storage types
+      saveFileInfo(selectedFile, formData.id || 'new');
     }
 
     // Simulate API call
