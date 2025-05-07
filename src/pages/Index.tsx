@@ -14,11 +14,17 @@ import { useMobileOptimization } from "@/hooks/use-mobile";
 // Lazy load Spline component
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
+const FALLBACK_SCENE_URLS = {
+  desktop: "https://prod.spline.design/JDyoDTFfEZbrAuAL/scene.splinecode",
+  mobile: "https://prod.spline.design/r3VfM6kqKBhA4ltJ/scene.splinecode"
+};
+
 const Index = () => {
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const profileImage = useProfileImage();
   const { isAuthenticated } = useAuth();
   const { shouldOptimize3D, isMobile } = useMobileOptimization();
@@ -47,10 +53,10 @@ const Index = () => {
 
   if (!mounted) return null;
 
-  // Use a simpler scene URL for mobile
+  // Use fallback scenes that are known to work
   const sceneUrl = shouldOptimize3D 
-    ? "https://prod.spline.design/6sYLzNGZYtEyM0MG/scene.splinecode" // Lighter scene for mobile
-    : "https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode"; // Full scene for desktop
+    ? FALLBACK_SCENE_URLS.mobile
+    : FALLBACK_SCENE_URLS.desktop;
 
   const handleSplineLoad = () => {
     console.log("Spline scene loaded");
@@ -60,13 +66,26 @@ const Index = () => {
   const handleSplineError = (error) => {
     console.error("Spline error:", error);
     setSplineError(true);
+    
+    // Avoid infinite retry loops
+    if (retryCount < 2) {
+      setTimeout(() => {
+        setSplineError(false); // Reset error state
+        setRetryCount(prev => prev + 1); // Increment retry count
+      }, 1000);
+    }
   };
 
   return (
     <div className="relative min-h-screen bg-background">
       {/* Spline Background */}
       <div className="fixed inset-0 z-0">
-        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} sceneName="Home" />
+        <SplineFallback 
+          isError={splineError} 
+          isLoading={!splineLoaded && !splineError} 
+          sceneName="Home" 
+          hideLoading={retryCount > 0}
+        />
         
         {!splineError && (
           <Suspense fallback={null}>

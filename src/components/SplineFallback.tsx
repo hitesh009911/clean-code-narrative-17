@@ -7,14 +7,20 @@ interface SplineFallbackProps {
   isError: boolean;
   isLoading: boolean;
   sceneName?: string;
+  hideLoading?: boolean;
 }
 
-const SplineFallback: React.FC<SplineFallbackProps> = ({ isError, isLoading, sceneName = '3D scene' }) => {
+const SplineFallback: React.FC<SplineFallbackProps> = ({ 
+  isError, 
+  isLoading, 
+  sceneName = '3D scene',
+  hideLoading = false
+}) => {
   const isMobile = useIsMobile();
   const [loadingProgress, setLoadingProgress] = useState(0);
   
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading && !hideLoading) {
       // Simulate loading progress for better UX
       const interval = setInterval(() => {
         setLoadingProgress(prev => {
@@ -32,9 +38,9 @@ const SplineFallback: React.FC<SplineFallbackProps> = ({ isError, isLoading, sce
     } else {
       setLoadingProgress(100);
     }
-  }, [isLoading]);
+  }, [isLoading, hideLoading]);
   
-  if (isLoading) {
+  if (isLoading && !hideLoading) {
     return (
       <div className="fixed inset-0 z-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
         <div className="text-center px-6 py-8 rounded-lg bg-background/90 backdrop-blur-md shadow-lg border border-border/30 max-w-xs w-full">
@@ -61,11 +67,18 @@ const SplineFallback: React.FC<SplineFallbackProps> = ({ isError, isLoading, sce
           <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
         </div>
         
-        {isMobile && (
-          <div className="absolute inset-x-0 bottom-8 text-center text-sm text-muted-foreground px-4">
-            <p>3D elements couldn't load. Please try on a desktop device for the full experience.</p>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center px-6 py-8 rounded-lg bg-background/90 backdrop-blur-md shadow-lg border border-border/30 max-w-md w-full">
+            <p className="text-foreground font-medium mb-4">
+              3D scene couldn't be loaded
+            </p>
+            <p className="text-muted-foreground text-sm mb-4">
+              {isMobile 
+                ? "This might be due to limited mobile resources. Try refreshing or viewing on a desktop device for the full experience." 
+                : "There was a problem loading the 3D content. Please refresh the page to try again."}
+            </p>
           </div>
-        )}
+        </div>
       </div>
     );
   }

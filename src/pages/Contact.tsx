@@ -10,10 +10,16 @@ import { useMobileOptimization } from "@/hooks/use-mobile";
 // Lazy load Spline component
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
+const FALLBACK_SCENE_URLS = {
+  desktop: "https://prod.spline.design/JDyoDTFfEZbrAuAL/scene.splinecode",
+  mobile: "https://prod.spline.design/r3VfM6kqKBhA4ltJ/scene.splinecode"
+};
+
 const Contact = () => {
   const [mounted, setMounted] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const { shouldOptimize3D } = useMobileOptimization();
 
   useEffect(() => {
@@ -22,10 +28,10 @@ const Contact = () => {
 
   if (!mounted) return null;
 
-  // Use a simpler scene URL for mobile
+  // Use fallback scenes that are known to work
   const sceneUrl = shouldOptimize3D 
-    ? "https://prod.spline.design/aJkWxvZOw3T8QuGg/scene.splinecode" // Lighter scene for mobile
-    : "https://prod.spline.design/oEVXMlV5gve7-WHJ/scene.splinecode"; // Full scene for desktop
+    ? FALLBACK_SCENE_URLS.mobile
+    : FALLBACK_SCENE_URLS.desktop;
 
   const handleSplineLoad = () => {
     console.log("Spline scene loaded");
@@ -35,13 +41,26 @@ const Contact = () => {
   const handleSplineError = (error) => {
     console.error("Spline error:", error);
     setSplineError(true);
+    
+    // Avoid infinite retry loops
+    if (retryCount < 2) {
+      setTimeout(() => {
+        setSplineError(false);
+        setRetryCount(prev => prev + 1);
+      }, 1000);
+    }
   };
 
   return (
     <div className="relative min-h-screen bg-background pt-16">
       {/* Spline Background */}
       <div className="fixed inset-0 z-0">
-        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} sceneName="Contact" />
+        <SplineFallback 
+          isError={splineError} 
+          isLoading={!splineLoaded && !splineError} 
+          sceneName="Contact" 
+          hideLoading={retryCount > 0}
+        />
         
         {!splineError && (
           <Suspense fallback={null}>
