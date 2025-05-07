@@ -1,22 +1,31 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { ArrowLeft, Github, Linkedin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
-import Spline from '@splinetool/react-spline';
 import SplineFallback from "@/components/SplineFallback";
+import { useMobileOptimization } from "@/hooks/use-mobile";
+
+// Lazy load Spline component
+const Spline = lazy(() => import('@splinetool/react-spline'));
 
 const Contact = () => {
   const [mounted, setMounted] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
+  const { shouldOptimize3D } = useMobileOptimization();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
+
+  // Use a simpler scene URL for mobile
+  const sceneUrl = shouldOptimize3D 
+    ? "https://prod.spline.design/aJkWxvZOw3T8QuGg/scene.splinecode" // Lighter scene for mobile
+    : "https://prod.spline.design/oEVXMlV5gve7-WHJ/scene.splinecode"; // Full scene for desktop
 
   const handleSplineLoad = () => {
     console.log("Spline scene loaded");
@@ -32,14 +41,17 @@ const Contact = () => {
     <div className="relative min-h-screen bg-background pt-16">
       {/* Spline Background */}
       <div className="fixed inset-0 z-0">
+        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} sceneName="Contact" />
+        
         {!splineError && (
-          <Spline 
-            scene="https://prod.spline.design/oEVXMlV5gve7-WHJ/scene.splinecode" 
-            onLoad={handleSplineLoad}
-            onError={handleSplineError}
-          />
+          <Suspense fallback={null}>
+            <Spline 
+              scene={sceneUrl} 
+              onLoad={handleSplineLoad}
+              onError={handleSplineError}
+            />
+          </Suspense>
         )}
-        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} />
       </div>
 
       <Navigation />
@@ -54,9 +66,9 @@ const Contact = () => {
         </div>
 
         <section className="py-8 md:py-16">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold mb-6 md:text-4xl text-white">Get In Touch</h2>
-            <p className="text-white mb-8">Have a project in mind or want to chat? Feel free to reach out.</p>
+          <div className="max-w-3xl mx-auto text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-white">Get In Touch</h2>
+            <p className="text-white mb-6 md:mb-8 text-sm md:text-base">Have a project in mind or want to chat? Feel free to reach out.</p>
             
             <div className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-white hover:bg-primary/20 transition-all">
               <Mail className="mr-2 h-4 w-4" />

@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
@@ -16,4 +17,23 @@ export function useIsMobile() {
   }, [])
 
   return !!isMobile
+}
+
+export function useMobileOptimization() {
+  const isMobile = useIsMobile()
+  const [hasReducedMotion, setHasReducedMotion] = React.useState(false)
+  
+  React.useEffect(() => {
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    setHasReducedMotion(prefersReducedMotion)
+  }, [])
+  
+  return {
+    isMobile,
+    hasReducedMotion,
+    shouldOptimize3D: isMobile || hasReducedMotion,
+    lowQualityMode: isMobile,
+    reduceAnimations: isMobile || hasReducedMotion
+  }
 }
