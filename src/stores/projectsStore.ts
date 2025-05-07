@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist, createJSONStorage, PersistStorage } from 'zustand/middleware';
 
@@ -49,50 +48,56 @@ const initialProjects = [
 ];
 
 // Create a custom storage that works with both localStorage and sessionStorage
-const dualStorage: PersistStorage<ProjectsState> = {
-  getItem: (name) => {
-    try {
-      // Try to get from localStorage first, then sessionStorage
-      const lsData = localStorage.getItem(name);
-      if (lsData) {
-        // Also sync to sessionStorage to ensure consistency
-        sessionStorage.setItem(name, lsData);
-        return JSON.parse(lsData);
+const createDualStorage = () => {
+  return {
+    getItem: (name: string) => {
+      try {
+        // Try to get from localStorage first, then sessionStorage
+        const lsData = localStorage.getItem(name);
+        if (lsData) {
+          // Also sync to sessionStorage to ensure consistency
+          sessionStorage.setItem(name, lsData);
+          return Promise.resolve(JSON.parse(lsData));
+        }
+        
+        const ssData = sessionStorage.getItem(name);
+        if (ssData) {
+          // Sync back to localStorage
+          localStorage.setItem(name, ssData);
+          return Promise.resolve(JSON.parse(ssData));
+        }
+        
+        return Promise.resolve(null);
+      } catch (e) {
+        console.error('Error getting data from storage', e);
+        return Promise.resolve(null);
       }
-      
-      const ssData = sessionStorage.getItem(name);
-      if (ssData) {
-        // Sync back to localStorage
-        localStorage.setItem(name, ssData);
-        return JSON.parse(ssData);
+    },
+    
+    setItem: (name: string, value: unknown) => {
+      try {
+        const stringValue = JSON.stringify(value);
+        // Store in both storage types for persistence
+        localStorage.setItem(name, stringValue);
+        sessionStorage.setItem(name, stringValue);
+        return Promise.resolve();
+      } catch (e) {
+        console.error('Error setting data in storage', e);
+        return Promise.resolve();
       }
-      
-      return null;
-    } catch (e) {
-      console.error('Error getting data from storage', e);
-      return null;
+    },
+    
+    removeItem: (name: string) => {
+      try {
+        localStorage.removeItem(name);
+        sessionStorage.removeItem(name);
+        return Promise.resolve();
+      } catch (e) {
+        console.error('Error removing data from storage', e);
+        return Promise.resolve();
+      }
     }
-  },
-  
-  setItem: (name, value) => {
-    try {
-      const stringValue = JSON.stringify(value);
-      // Store in both storage types for persistence
-      localStorage.setItem(name, stringValue);
-      sessionStorage.setItem(name, stringValue);
-    } catch (e) {
-      console.error('Error setting data in storage', e);
-    }
-  },
-  
-  removeItem: (name) => {
-    try {
-      localStorage.removeItem(name);
-      sessionStorage.removeItem(name);
-    } catch (e) {
-      console.error('Error removing data from storage', e);
-    }
-  }
+  };
 };
 
 export const useProjectsStore = create<ProjectsState>()(
@@ -135,7 +140,7 @@ export const useProjectsStore = create<ProjectsState>()(
     }),
     {
       name: 'portfolio-projects-storage',
-      storage: dualStorage
+      storage: createJSONStorage(() => createDualStorage())
     }
   )
 );
