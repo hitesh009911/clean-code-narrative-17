@@ -12,11 +12,6 @@ import SplineFallback from "@/components/SplineFallback";
 // Lazy load Spline component to reduce initial load time
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
-const FALLBACK_SCENE_URLS = {
-  desktop: "https://prod.spline.design/JDyoDTFfEZbrAuAL/scene.splinecode",
-  mobile: "https://prod.spline.design/r3VfM6kqKBhA4ltJ/scene.splinecode"
-};
-
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -27,7 +22,6 @@ const ProjectDetail = () => {
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
 
   const project = id ? getProjectById(Number(id)) : null;
 
@@ -51,29 +45,17 @@ const ProjectDetail = () => {
   const handleSplineError = (error) => {
     console.error("Spline error:", error);
     setSplineError(true);
-    
-    // Avoid infinite retry loops
-    if (retryCount < 2) {
-      setTimeout(() => {
-        setSplineError(false);
-        setRetryCount(prev => prev + 1);
-      }, 1000);
-    }
   };
 
   return (
     <div className="relative min-h-screen bg-background pt-16">
       {/* Spline Background */}
       <div className="fixed inset-0 z-0">
-        <SplineFallback 
-          isError={splineError} 
-          isLoading={!splineLoaded && !splineError}
-          hideLoading={retryCount > 0}
-        />
+        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} />
         {!splineError && (
           <Suspense fallback={null}>
             <Spline 
-              scene={FALLBACK_SCENE_URLS.desktop} 
+              scene="https://prod.spline.design/C8o-RCpz0hHQdBa8/scene.splinecode" 
               onLoad={handleSplineLoad}
               onError={handleSplineError}
             />
