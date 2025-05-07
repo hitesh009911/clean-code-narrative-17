@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -55,7 +54,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     setIsLoading(true);
     
     // Validate form
-    if (!formData.title || !formData.description || !formData.tags.length === 0) {
+    if (!formData.title || !formData.description || formData.tags.length === 0) {
       toast({
         title: "Form Error",
         description: "Title, description, and tags are required",
