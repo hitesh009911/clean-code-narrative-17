@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Image, ImagePlus, Star } from 'lucide-react';
+import { Image, ImagePlus, Star, FileText } from 'lucide-react';
 
 export type ProjectFormData = {
   id?: number;
@@ -32,6 +32,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [useCustomImage, setUseCustomImage] = useState(!!initialData.image);
   const [profileImagePreview, setProfileImagePreview] = useState(initialData.image || '');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   
   const navigate = useNavigate();
@@ -54,19 +55,56 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     setIsLoading(true);
     
     // Validate form
-    if (!formData.title || !formData.description || !formData.image || formData.tags.length === 0) {
+    if (!formData.title || !formData.description || !formData.tags.length === 0) {
       toast({
         title: "Form Error",
-        description: "All fields are required",
+        description: "Title, description, and tags are required",
         variant: "destructive",
       });
       setIsLoading(false);
       return;
     }
 
+    // If we have an image preview but no image in formData, update formData
+    if (profileImagePreview && !formData.image) {
+      setFormData(prev => ({ ...prev, image: profileImagePreview }));
+    }
+
+    // Ensure we have an image
+    if (!profileImagePreview && !formData.image) {
+      toast({
+        title: "Form Error",
+        description: "Project image is required",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // Store file information if available
+    if (selectedFile) {
+      // In a real app with backend, you would upload the file here
+      // For now, we're storing file metadata in localStorage just for demonstration
+      const projectFileInfo = {
+        name: selectedFile.name,
+        type: selectedFile.type,
+        size: selectedFile.size,
+        lastModified: selectedFile.lastModified,
+        uploadedAt: new Date().toISOString()
+      };
+      
+      localStorage.setItem(`projectImage_${formData.id || 'new'}`, JSON.stringify(projectFileInfo));
+    }
+
     // Simulate API call
     setTimeout(() => {
-      onSubmit(formData);
+      // Ensure image is in the data before submitting
+      const finalFormData = {
+        ...formData,
+        image: profileImagePreview || formData.image
+      };
+      
+      onSubmit(finalFormData);
       setIsLoading(false);
       
       toast({
@@ -83,6 +121,16 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Maximum file size is 10MB",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result as string;
@@ -90,6 +138,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         setFormData(prev => ({ ...prev, image: result }));
       };
       reader.readAsDataURL(file);
+      setUseCustomImage(true);
     }
   };
 
@@ -183,12 +232,21 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       setUseCustomImage(false);
                       setFormData(prev => ({ ...prev, image: '' }));
                       setProfileImagePreview('');
+                      setSelectedFile(null);
                     }}
                   >
                     Remove
                   </Button>
                 </div>
               </div>
+              {selectedFile && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2 p-2 border rounded-md bg-secondary/10">
+                  <FileText className="h-4 w-4" />
+                  <span>
+                    {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between items-center mt-2">
                 <span className="text-xs text-muted-foreground">Hover over image to edit</span>
                 <Input

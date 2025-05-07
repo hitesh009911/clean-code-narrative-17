@@ -23,6 +23,7 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
   const [imageUrl, setImageUrl] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -38,6 +39,7 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
         return;
       }
 
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
         setPreviewImage(event.target?.result as string);
@@ -53,7 +55,21 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
       let newImage = currentImage;
       
       if (tabValue === "upload" && previewImage) {
-        newImage = previewImage;
+        if (selectedFile) {
+          // In a real app with backend, you would upload the file here
+          // For now, we're using the base64 representation
+          newImage = previewImage;
+          
+          // Store file information in localStorage for demonstration
+          const fileInfo = {
+            name: selectedFile.name,
+            type: selectedFile.type,
+            size: selectedFile.size,
+            lastModified: selectedFile.lastModified,
+            uploadedAt: new Date().toISOString()
+          };
+          localStorage.setItem("userProfileImageInfo", JSON.stringify(fileInfo));
+        }
       } else if (tabValue === "url" && imageUrl) {
         newImage = imageUrl;
       } else {
@@ -130,6 +146,11 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
                       alt="Preview" 
                       className="w-full h-full object-cover rounded-md"
                     />
+                    {selectedFile && (
+                      <div className="mt-2 text-sm text-muted-foreground">
+                        {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <>

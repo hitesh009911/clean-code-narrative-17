@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Eye, EyeOff, Key } from 'lucide-react';
+import { Eye, EyeOff, Key, AlertCircle, Shield } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 
 type PasswordChangeDialogProps = {
   trigger?: React.ReactNode;
@@ -27,6 +28,7 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { updatePassword } = useAuth();
@@ -44,6 +46,40 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  const calculatePasswordStrength = (password: string) => {
+    let score = 0;
+    
+    // Length check
+    if (password.length >= 8) score += 20;
+    if (password.length >= 12) score += 10;
+    
+    // Complexity checks
+    if (/[A-Z]/.test(password)) score += 20; // Has uppercase
+    if (/[a-z]/.test(password)) score += 15; // Has lowercase
+    if (/[0-9]/.test(password)) score += 15; // Has number
+    if (/[^A-Za-z0-9]/.test(password)) score += 20; // Has special char
+    
+    return Math.min(100, score);
+  };
+
+  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNewPassword(value);
+    setPasswordStrength(calculatePasswordStrength(value));
+  };
+
+  const getPasswordStrengthLabel = () => {
+    if (passwordStrength >= 80) return { text: "Strong", color: "text-green-500" };
+    if (passwordStrength >= 50) return { text: "Medium", color: "text-yellow-500" };
+    return { text: "Weak", color: "text-red-500" };
+  };
+
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength >= 80) return "bg-green-500";
+    if (passwordStrength >= 50) return "bg-yellow-500";
+    return "bg-red-500";
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -56,9 +92,19 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
       return;
     }
     
+    if (passwordStrength < 50) {
+      toast({
+        title: "Password too weak",
+        description: "Please choose a stronger password with a mix of uppercase, lowercase, numbers, and symbols",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
     setTimeout(() => {
+      // In a real application with a backend, you would hash the password before sending it
       const success = updatePassword(currentPassword, newPassword);
       
       if (success) {
@@ -87,6 +133,7 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
     setShowCurrentPassword(false);
     setShowNewPassword(false);
     setShowConfirmPassword(false);
+    setPasswordStrength(0);
   };
 
   return (
@@ -96,7 +143,10 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Change Password</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-primary" />
+            Change Password
+          </DialogTitle>
           <DialogDescription>
             Update your admin password. Make sure to choose a strong password.
           </DialogDescription>
@@ -113,6 +163,7 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   className="pr-10"
                   required
+                  autoComplete="current-password"
                 />
                 <button 
                   type="button"
@@ -130,9 +181,10 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
                   id="new-password"
                   type={showNewPassword ? "text" : "password"}
                   value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  onChange={handleNewPasswordChange}
                   className="pr-10"
                   required
+                  autoComplete="new-password"
                 />
                 <button 
                   type="button"
@@ -142,6 +194,27 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
                   {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
+              {newPassword && (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs">Password strength:</span>
+                    <span className={`text-xs font-medium ${getPasswordStrengthLabel().color}`}>
+                      {getPasswordStrengthLabel().text}
+                    </span>
+                  </div>
+                  <Progress 
+                    value={passwordStrength} 
+                    className="h-1"
+                    indicatorClassName={getPasswordStrengthColor()}
+                  />
+                  {passwordStrength < 50 && (
+                    <div className="flex items-center gap-1 text-xs text-amber-500">
+                      <AlertCircle className="h-3 w-3" />
+                      <span>Use uppercase, lowercase, numbers and symbols</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="confirm-password">Confirm New Password</Label>
@@ -153,6 +226,7 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="pr-10"
                   required
+                  autoComplete="new-password"
                 />
                 <button 
                   type="button"
@@ -162,6 +236,11 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
                   {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
+              {confirmPassword && newPassword !== confirmPassword && (
+                <p className="text-xs text-destructive flex items-center gap-1 mt-1">
+                  <AlertCircle className="h-3 w-3" /> Passwords don't match
+                </p>
+              )}
             </div>
           </div>
           <DialogFooter>
@@ -178,7 +257,7 @@ const PasswordChangeDialog = ({ trigger }: PasswordChangeDialogProps) => {
             </Button>
             <Button 
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !newPassword || !confirmPassword || newPassword !== confirmPassword}
             >
               {isLoading ? "Updating..." : "Update Password"}
             </Button>
