@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 
@@ -141,13 +140,24 @@ export const useProjectsStore = create<ProjectsState>()(
       // Add functions for uploaded images persistence
       storeUploadedImage: (imageKey, imageData) => {
         try {
-          // Store in both localStorage and sessionStorage for persistence
+          // Direct localStorage and sessionStorage access for important data like profile images
+          // This ensures it's available immediately across tabs/sessions
           localStorage.setItem(imageKey, imageData);
           sessionStorage.setItem(imageKey, imageData);
           
           // Dispatch custom events to notify all components
           window.dispatchEvent(new Event('storage'));
           window.dispatchEvent(new Event('storage-local'));
+          
+          // Also store in our state for completeness
+          set((state) => ({ 
+            ...state,
+            // Store in an internal map for component access
+            uploadedImages: { 
+              ...state.uploadedImages || {}, 
+              [imageKey]: imageData 
+            }
+          }));
         } catch (error) {
           console.error('Error storing uploaded image', error);
         }
@@ -155,8 +165,27 @@ export const useProjectsStore = create<ProjectsState>()(
       
       getUploadedImage: (imageKey) => {
         try {
-          // Try localStorage first, then sessionStorage
-          return localStorage.getItem(imageKey) || sessionStorage.getItem(imageKey);
+          // First try direct state access
+          const state = get();
+          if (state.uploadedImages && state.uploadedImages[imageKey]) {
+            return state.uploadedImages[imageKey];
+          }
+          
+          // Then fallback to localStorage/sessionStorage
+          const fromStorage = localStorage.getItem(imageKey) || sessionStorage.getItem(imageKey);
+          
+          // If found in storage but not in state, update state
+          if (fromStorage && (!state.uploadedImages || !state.uploadedImages[imageKey])) {
+            set((state) => ({
+              ...state,
+              uploadedImages: { 
+                ...state.uploadedImages || {}, 
+                [imageKey]: fromStorage 
+              }
+            }));
+          }
+          
+          return fromStorage;
         } catch (error) {
           console.error('Error retrieving uploaded image', error);
           return null;

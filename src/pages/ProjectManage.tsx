@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon, Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,10 +18,20 @@ const ProjectManage = () => {
   const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
+  const [profileImageReady, setProfileImageReady] = useState(false);
   const profileImage = useProfileImage();
 
   useEffect(() => {
     setMounted(true);
+    // Force a refresh of the profile image on mount
+    const storedImage = localStorage.getItem("userProfileImage") || 
+                       sessionStorage.getItem("userProfileImage");
+    if (storedImage) {
+      setProfileImageReady(true);
+    } else {
+      // Set a default if none exists
+      setProfileImageReady(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -60,6 +69,10 @@ const ProjectManage = () => {
       title: "Profile Image Updated",
       description: "Your profile image has been updated successfully.",
     });
+    
+    // Force a refresh to ensure the image updates everywhere
+    window.dispatchEvent(new Event('storage'));
+    window.dispatchEvent(new Event('storage-local'));
   };
 
   const defaultImage = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop";
@@ -80,7 +93,10 @@ const ProjectManage = () => {
               <h1 className="text-3xl font-bold">Project Management</h1>
               <div className="flex items-center gap-2 mt-2">
                 <Avatar className="h-10 w-10 border-2 border-primary">
-                  <AvatarImage src={profileImage || defaultImage} alt="Profile" />
+                  <AvatarImage 
+                    src={profileImage || defaultImage} 
+                    alt="Profile" 
+                  />
                   <AvatarFallback>👤</AvatarFallback>
                 </Avatar>
                 <span className="text-sm text-muted-foreground">Admin Dashboard</span>

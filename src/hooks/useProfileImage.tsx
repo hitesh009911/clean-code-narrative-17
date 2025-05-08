@@ -11,18 +11,20 @@ export const useProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Initial load from localStorage with fallback to sessionStorage
-    const savedImage = getUploadedImage("userProfileImage");
-    if (savedImage) {
-      setProfileImage(savedImage);
-    }
+    // Function to load the image that will be called both initially and on storage events
+    const loadProfileImage = () => {
+      const savedImage = getUploadedImage("userProfileImage");
+      if (savedImage) {
+        setProfileImage(savedImage);
+      }
+    };
+
+    // Initial load
+    loadProfileImage();
 
     // Function to handle storage changes (both from this tab and others)
     const handleStorageChange = () => {
-      const currentImage = getUploadedImage("userProfileImage");
-      if (currentImage) {
-        setProfileImage(currentImage);
-      }
+      loadProfileImage();
     };
 
     // Listen for storage events (for cross-tab synchronization)
