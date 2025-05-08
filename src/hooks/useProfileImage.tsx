@@ -7,37 +7,41 @@ import { useProjectsStore } from '@/stores/projectsStore';
  * @returns The current profile image URL or null if not set
  */
 export const useProfileImage = () => {
-  const { storeUploadedImage, getUploadedImage } = useProjectsStore();
+  const { getUploadedImage } = useProjectsStore();
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Function to load the image that will be called both initially and on storage events
-    const loadProfileImage = () => {
-      const savedImage = getUploadedImage("userProfileImage");
-      if (savedImage) {
-        setProfileImage(savedImage);
-      }
-    };
-
     // Initial load
     loadProfileImage();
 
-    // Function to handle storage changes (both from this tab and others)
-    const handleStorageChange = () => {
-      loadProfileImage();
-    };
-
-    // Listen for storage events (for cross-tab synchronization)
-    window.addEventListener('storage', handleStorageChange);
+    // Set up event listeners
+    window.addEventListener('storage', loadProfileImage);
+    window.addEventListener('storage-local', loadProfileImage);
     
-    // Also listen for our custom event (for same-tab synchronization)
-    window.addEventListener('storage-local', handleStorageChange);
-
+    // Clean up
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('storage-local', handleStorageChange);
+      window.removeEventListener('storage', loadProfileImage);
+      window.removeEventListener('storage-local', loadProfileImage);
     };
-  }, [getUploadedImage]);
+  }, []);
+  
+  // We're defining the function directly in this scope to avoid dependency issues
+  function loadProfileImage() {
+    // Try direct localStorage first for immediate access
+    const directImage = localStorage.getItem("userProfileImage") || 
+                        sessionStorage.getItem("userProfileImage");
+                        
+    if (directImage) {
+      setProfileImage(directImage);
+      return;
+    }
+    
+    // Fall back to store function if direct access fails
+    const storeImage = getUploadedImage("userProfileImage");
+    if (storeImage) {
+      setProfileImage(storeImage);
+    }
+  }
 
   return profileImage;
 };

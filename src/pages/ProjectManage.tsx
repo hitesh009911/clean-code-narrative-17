@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon, Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,20 +19,10 @@ const ProjectManage = () => {
   const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
-  const [profileImageReady, setProfileImageReady] = useState(false);
   const profileImage = useProfileImage();
 
   useEffect(() => {
     setMounted(true);
-    // Force a refresh of the profile image on mount
-    const storedImage = localStorage.getItem("userProfileImage") || 
-                       sessionStorage.getItem("userProfileImage");
-    if (storedImage) {
-      setProfileImageReady(true);
-    } else {
-      // Set a default if none exists
-      setProfileImageReady(true);
-    }
   }, []);
 
   useEffect(() => {
@@ -65,6 +56,10 @@ const ProjectManage = () => {
     // Use our improved storage method
     storeUploadedImage("userProfileImage", newImage);
     
+    // Also write directly to storage for immediate effect
+    localStorage.setItem("userProfileImage", newImage);
+    sessionStorage.setItem("userProfileImage", newImage);
+    
     toast({
       title: "Profile Image Updated",
       description: "Your profile image has been updated successfully.",
@@ -75,7 +70,11 @@ const ProjectManage = () => {
     window.dispatchEvent(new Event('storage-local'));
   };
 
+  // Default image if no profile image is available
   const defaultImage = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop";
+
+  // Use the profile image or default if not available
+  const displayImage = profileImage || defaultImage;
 
   return (
     <div className="relative min-h-screen bg-background pt-16">
@@ -94,8 +93,15 @@ const ProjectManage = () => {
               <div className="flex items-center gap-2 mt-2">
                 <Avatar className="h-10 w-10 border-2 border-primary">
                   <AvatarImage 
-                    src={profileImage || defaultImage} 
+                    src={displayImage} 
                     alt="Profile" 
+                    onError={(e) => {
+                      // If image fails to load, use the default
+                      const target = e.target as HTMLImageElement;
+                      if (target.src !== defaultImage) {
+                        target.src = defaultImage;
+                      }
+                    }}
                   />
                   <AvatarFallback>👤</AvatarFallback>
                 </Avatar>
@@ -106,7 +112,7 @@ const ProjectManage = () => {
           
           <div className="flex gap-3">
             <UserImageChangeDialog 
-              currentImage={profileImage || defaultImage}
+              currentImage={displayImage}
               onImageChange={handleProfileImageChange}
               trigger={
                 <Button variant="outline" className="flex items-center gap-2">

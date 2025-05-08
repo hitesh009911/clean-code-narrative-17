@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,6 +29,17 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Reset dialog state when it opens
+  useEffect(() => {
+    if (isOpen) {
+      setPreviewImage(null);
+      setImageUrl("");
+      setTabValue("upload");
+      setSelectedFile(null);
+    }
+  }, [isOpen]);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,8 +70,7 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
       
       if (tabValue === "upload" && previewImage) {
         if (selectedFile) {
-          // In a real app with backend, you would upload the file here
-          // For now, we're using the base64 representation
+          // Use the base64 representation
           newImage = previewImage;
           
           // Store file information for demonstration
@@ -72,7 +82,7 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
             uploadedAt: new Date().toISOString()
           };
           
-          // Store file info using our central store
+          // Store file info for debugging/tracking
           storeUploadedImage("userProfileImageInfo", JSON.stringify(fileInfo));
         }
       } else if (tabValue === "url" && imageUrl) {
@@ -86,21 +96,33 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
         return;
       }
       
+      // Important: Store with the consistent key
+      const imageKey = "userProfileImage";
+      
       // Store the image using our central store
-      storeUploadedImage("userProfileImage", newImage); 
+      storeUploadedImage(imageKey, newImage);
+      
+      // Force update localStorage directly to ensure persistence
+      localStorage.setItem(imageKey, newImage);
+      sessionStorage.setItem(imageKey, newImage);
+      
+      // Make sure to tell the parent component about the change
+      onImageChange(newImage);
       
       // Dispatch events to ensure all components are updated
       window.dispatchEvent(new Event('storage'));
       window.dispatchEvent(new Event('storage-local'));
       
-      // Update parent component
-      onImageChange(newImage);
-      
+      // Show success message
       toast({
         title: "Success",
         description: "Profile image updated successfully",
       });
+      
+      // Close dialog after successful update
+      setIsOpen(false);
     } catch (error) {
+      console.error("Image update error:", error);
       toast({
         title: "Error",
         description: "Failed to update profile image",
@@ -115,19 +137,9 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
     setImageUrl(e.target.value);
     setPreviewImage(e.target.value);
   };
-  
-  // Reset the dialog state when it opens
-  const handleOpenChange = (open: boolean) => {
-    if (open) {
-      setPreviewImage(null);
-      setImageUrl("");
-      setTabValue("upload");
-      setSelectedFile(null);
-    }
-  };
 
   return (
-    <Dialog onOpenChange={handleOpenChange}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
@@ -231,7 +243,7 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
         
         <DialogFooter className="flex justify-between sm:justify-between">
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline" onClick={() => setIsOpen(false)}>Cancel</Button>
           </DialogClose>
           <Button onClick={handleSave} disabled={isLoading || !previewImage}>
             {isLoading ? "Saving..." : "Save Changes"}
