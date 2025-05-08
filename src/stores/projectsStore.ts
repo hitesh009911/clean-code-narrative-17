@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { persist, createJSONStorage, PersistStorage } from 'zustand/middleware';
+import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 
 export type Project = {
   id: number;
@@ -52,7 +52,8 @@ const initialProjects = [
 ];
 
 // Create a custom storage that works with both localStorage and sessionStorage
-const createDualStorage = (): PersistStorage<ProjectsState> => {
+// Fixed the type to match StateStorage
+const createDualStorage = (): StateStorage => {
   return {
     getItem: (name: string) => {
       try {
@@ -61,33 +62,30 @@ const createDualStorage = (): PersistStorage<ProjectsState> => {
         if (lsData) {
           // Also sync to sessionStorage to ensure consistency
           sessionStorage.setItem(name, lsData);
-          return Promise.resolve(JSON.parse(lsData));
+          return lsData;
         }
         
         const ssData = sessionStorage.getItem(name);
         if (ssData) {
           // Sync back to localStorage
           localStorage.setItem(name, ssData);
-          return Promise.resolve(JSON.parse(ssData));
+          return ssData;
         }
         
-        return Promise.resolve(null);
+        return null;
       } catch (e) {
         console.error('Error getting data from storage', e);
-        return Promise.resolve(null);
+        return null;
       }
     },
     
-    setItem: (name: string, value: unknown) => {
+    setItem: (name: string, value: string) => {
       try {
-        const stringValue = JSON.stringify(value);
         // Store in both storage types for persistence
-        localStorage.setItem(name, stringValue);
-        sessionStorage.setItem(name, stringValue);
-        return Promise.resolve();
+        localStorage.setItem(name, value);
+        sessionStorage.setItem(name, value);
       } catch (e) {
         console.error('Error setting data in storage', e);
-        return Promise.resolve();
       }
     },
     
@@ -95,10 +93,8 @@ const createDualStorage = (): PersistStorage<ProjectsState> => {
       try {
         localStorage.removeItem(name);
         sessionStorage.removeItem(name);
-        return Promise.resolve();
       } catch (e) {
         console.error('Error removing data from storage', e);
-        return Promise.resolve();
       }
     }
   };
