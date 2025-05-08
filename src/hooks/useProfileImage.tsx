@@ -9,6 +9,9 @@ import { useProjectsStore } from '@/stores/projectsStore';
 export const useProfileImage = () => {
   const { getUploadedImage } = useProjectsStore();
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  
+  // Set the default image path for when no profile image is available
+  const defaultImage = "/lovable-uploads/0b1d6edc-9ac8-441a-8901-f8943162486d.png";
 
   useEffect(() => {
     // Initial load
@@ -40,7 +43,11 @@ export const useProfileImage = () => {
     const storeImage = getUploadedImage("userProfileImage");
     if (storeImage) {
       setProfileImage(storeImage);
+      return;
     }
+
+    // If no image is found, use the default image
+    setProfileImage(defaultImage);
   }
 
   return profileImage;

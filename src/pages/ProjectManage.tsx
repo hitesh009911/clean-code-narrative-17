@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon, Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -70,8 +69,8 @@ const ProjectManage = () => {
     window.dispatchEvent(new Event('storage-local'));
   };
 
-  // Default image if no profile image is available
-  const defaultImage = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=400&auto=format&fit=crop";
+  // Default image is now the uploaded profile image
+  const defaultImage = "/lovable-uploads/0b1d6edc-9ac8-441a-8901-f8943162486d.png";
 
   // Use the profile image or default if not available
   const displayImage = profileImage || defaultImage;
