@@ -1,3 +1,4 @@
+
 import { create } from 'zustand';
 import { persist, createJSONStorage, PersistStorage } from 'zustand/middleware';
 
@@ -17,6 +18,9 @@ type ProjectsState = {
   addProject: (project: Omit<Project, 'id'>) => Project;
   updateProject: (id: number, project: Partial<Omit<Project, 'id'>>) => void;
   deleteProject: (id: number) => void;
+  // Add new function to store uploaded images
+  storeUploadedImage: (imageKey: string, imageData: string) => void;
+  getUploadedImage: (imageKey: string) => string | null;
 };
 
 // Initial projects data (could come from an API in a real application)
@@ -48,7 +52,7 @@ const initialProjects = [
 ];
 
 // Create a custom storage that works with both localStorage and sessionStorage
-const createDualStorage = () => {
+const createDualStorage = (): PersistStorage<ProjectsState> => {
   return {
     getItem: (name: string) => {
       try {
@@ -137,6 +141,31 @@ export const useProjectsStore = create<ProjectsState>()(
           projects: state.projects.filter(project => project.id !== id),
         }));
       },
+
+      // Add functions for uploaded images persistence
+      storeUploadedImage: (imageKey, imageData) => {
+        try {
+          // Store in both localStorage and sessionStorage for persistence
+          localStorage.setItem(imageKey, imageData);
+          sessionStorage.setItem(imageKey, imageData);
+          
+          // Dispatch custom events to notify all components
+          window.dispatchEvent(new Event('storage'));
+          window.dispatchEvent(new Event('storage-local'));
+        } catch (error) {
+          console.error('Error storing uploaded image', error);
+        }
+      },
+      
+      getUploadedImage: (imageKey) => {
+        try {
+          // Try localStorage first, then sessionStorage
+          return localStorage.getItem(imageKey) || sessionStorage.getItem(imageKey);
+        } catch (error) {
+          console.error('Error retrieving uploaded image', error);
+          return null;
+        }
+      }
     }),
     {
       name: 'portfolio-projects-storage',

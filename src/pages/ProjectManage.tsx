@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon, Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; 
 import Navigation from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,7 +15,7 @@ import { useProfileImage } from "@/hooks/useProfileImage";
 const ProjectManage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
-  const { projects, deleteProject } = useProjectsStore();
+  const { projects, deleteProject, storeUploadedImage } = useProjectsStore();
   const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
@@ -52,6 +53,9 @@ const ProjectManage = () => {
   };
 
   const handleProfileImageChange = (newImage: string) => {
+    // Use our improved storage method
+    storeUploadedImage("userProfileImage", newImage);
+    
     toast({
       title: "Profile Image Updated",
       description: "Your profile image has been updated successfully.",
@@ -65,14 +69,23 @@ const ProjectManage = () => {
       <Navigation />
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <div>
+          <div className="flex items-center gap-4">
             <Button variant="ghost" asChild className="group mb-2">
               <Link to="/projects" className="flex items-center text-muted-foreground hover:text-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
                 Back to Projects
               </Link>
             </Button>
-            <h1 className="text-3xl font-bold">Project Management</h1>
+            <div>
+              <h1 className="text-3xl font-bold">Project Management</h1>
+              <div className="flex items-center gap-2 mt-2">
+                <Avatar className="h-10 w-10 border-2 border-primary">
+                  <AvatarImage src={profileImage || defaultImage} alt="Profile" />
+                  <AvatarFallback>👤</AvatarFallback>
+                </Avatar>
+                <span className="text-sm text-muted-foreground">Admin Dashboard</span>
+              </div>
+            </div>
           </div>
           
           <div className="flex gap-3">

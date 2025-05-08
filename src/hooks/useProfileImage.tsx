@@ -1,30 +1,27 @@
+
 import { useState, useEffect } from 'react';
+import { useProjectsStore } from '@/stores/projectsStore';
 
 /**
  * Custom hook to get and watch for changes to the profile image in localStorage
  * @returns The current profile image URL or null if not set
  */
 export const useProfileImage = () => {
+  const { storeUploadedImage, getUploadedImage } = useProjectsStore();
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
     // Initial load from localStorage with fallback to sessionStorage
-    const savedImage = localStorage.getItem("userProfileImage") || sessionStorage.getItem("userProfileImage");
+    const savedImage = getUploadedImage("userProfileImage");
     if (savedImage) {
       setProfileImage(savedImage);
-      // Ensure it's in both storage types for persistence
-      localStorage.setItem("userProfileImage", savedImage);
-      sessionStorage.setItem("userProfileImage", savedImage);
     }
 
     // Function to handle storage changes (both from this tab and others)
     const handleStorageChange = () => {
-      const currentImage = localStorage.getItem("userProfileImage") || sessionStorage.getItem("userProfileImage");
+      const currentImage = getUploadedImage("userProfileImage");
       if (currentImage) {
         setProfileImage(currentImage);
-        // Keep both storage types in sync
-        localStorage.setItem("userProfileImage", currentImage);
-        sessionStorage.setItem("userProfileImage", currentImage);
       }
     };
 
@@ -38,7 +35,7 @@ export const useProfileImage = () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('storage-local', handleStorageChange);
     };
-  }, []);
+  }, [getUploadedImage]);
 
   return profileImage;
 };
