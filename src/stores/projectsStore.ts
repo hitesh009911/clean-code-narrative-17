@@ -1,3 +1,4 @@
+
 import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 
@@ -13,6 +14,7 @@ export type Project = {
 type ProjectsState = {
   projects: Project[];
   nextId: number;
+  uploadedImages: Record<string, string>; // Add this property to store uploaded images
   getProjectById: (id: number) => Project | undefined;
   addProject: (project: Omit<Project, 'id'>) => Project;
   updateProject: (id: number, project: Partial<Omit<Project, 'id'>>) => void;
@@ -51,7 +53,6 @@ const initialProjects = [
 ];
 
 // Create a custom storage that works with both localStorage and sessionStorage
-// Fixed the type to match StateStorage
 const createDualStorage = (): StateStorage => {
   return {
     getItem: (name: string) => {
@@ -104,6 +105,7 @@ export const useProjectsStore = create<ProjectsState>()(
     (set, get) => ({
       projects: initialProjects,
       nextId: initialProjects.length + 1,
+      uploadedImages: {}, // Initialize the uploadedImages property
       
       getProjectById: (id) => {
         return get().projects.find(project => project.id === id);
@@ -152,9 +154,9 @@ export const useProjectsStore = create<ProjectsState>()(
           // Also store in our state for completeness
           set((state) => ({ 
             ...state,
-            // Store in an internal map for component access
+            // Store in uploadedImages map for component access
             uploadedImages: { 
-              ...state.uploadedImages || {}, 
+              ...state.uploadedImages, 
               [imageKey]: imageData 
             }
           }));
@@ -175,11 +177,11 @@ export const useProjectsStore = create<ProjectsState>()(
           const fromStorage = localStorage.getItem(imageKey) || sessionStorage.getItem(imageKey);
           
           // If found in storage but not in state, update state
-          if (fromStorage && (!state.uploadedImages || !state.uploadedImages[imageKey])) {
+          if (fromStorage && !state.uploadedImages[imageKey]) {
             set((state) => ({
               ...state,
               uploadedImages: { 
-                ...state.uploadedImages || {}, 
+                ...state.uploadedImages, 
                 [imageKey]: fromStorage 
               }
             }));
