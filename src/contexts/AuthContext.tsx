@@ -1,61 +1,109 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import type { User, Session } from '@supabase/supabase-js';
 
 type AuthContextType = {
+  user: User | null;
+  session: Session | null;
   isAuthenticated: boolean;
-  login: (password: string) => boolean;
-  logout: () => void;
-  updatePassword: (currentPassword: string, newPassword: string) => boolean;
+  isAdmin: boolean;
+  login: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signup: (email: string, password: string) => Promise<{ error: Error | null }>;
+  logout: () => Promise<void>;
+  updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Default password - in a real app, this would be hashed and stored securely
-const DEFAULT_PASSWORD = "hitesh123";
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // Get the stored password from localStorage or use the default
-  const [password, setPassword] = useState(() => {
-    const storedPassword = localStorage.getItem('adminPassword');
-    return storedPassword || DEFAULT_PASSWORD;
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Check local storage on initial load for auth status
   useEffect(() => {
-    const authStatus = localStorage.getItem('cmsAuth');
-    setIsAuthenticated(authStatus === 'true');
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        // Check admin role when session changes
+        if (session?.user) {
+          setTimeout(() => {
+            checkAdminRole(session.user.id);
+          }, 0);
+        } else {
+          setIsAdmin(false);
+        }
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      
+      if (session?.user) {
+        checkAdminRole(session.user.id);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = (attemptedPassword: string) => {
-    if (attemptedPassword === password) {
-      setIsAuthenticated(true);
-      localStorage.setItem('cmsAuth', 'true');
-      sessionStorage.setItem('cmsAuth', 'true'); // Add to session storage too
-      return true;
-    }
-    return false;
+  const checkAdminRole = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .eq('role', 'admin')
+      .maybeSingle();
+    
+    setIsAdmin(!!data && !error);
   };
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('cmsAuth');
-    sessionStorage.removeItem('cmsAuth');
+  const signup = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`
+      }
+    });
+    return { error };
   };
 
-  const updatePassword = (currentPassword: string, newPassword: string) => {
-    if (currentPassword === password) {
-      // Save password to both state and storage
-      setPassword(newPassword);
-      localStorage.setItem('adminPassword', newPassword);
-      sessionStorage.setItem('adminPassword', newPassword); // Add to session storage too
-      return true;
-    }
-    return false;
+  const login = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    return { error };
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setIsAdmin(false);
+  };
+
+  const updatePassword = async (newPassword: string) => {
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+    return { error };
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, updatePassword }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      isAuthenticated: !!session, 
+      isAdmin,
+      login, 
+      signup,
+      logout, 
+      updatePassword 
+    }}>
       {children}
     </AuthContext.Provider>
   );
