@@ -152,21 +152,23 @@ const Skills = () => {
             
             <div className="flex-1">
               <h2 className="text-3xl font-bold mb-6 md:text-4xl">About Me</h2>
-              <div className="prose dark:prose-invert max-w-none space-y-4 text-pretty">
-                <p>
-                  Hello! I'm Hitesh, a passionate full-stack developer with expertise in AI and machine learning. 
-                  I combine technical skills with creative problem-solving to build innovative solutions.
-                </p>
-                <p>
-                  With over a year of experience in web and AI development, I've worked on projects ranging from 
-                  responsive web applications to advanced machine learning models. My approach focuses on 
-                  creating user-friendly experiences while leveraging cutting-edge technologies.
-                </p>
-                <p>
-                  When I'm not coding, you can find me exploring new technologies, contributing to open-source projects,
-                  or diving into the latest research in artificial intelligence. I believe in continuous learning and 
-                  staying ahead of industry trends to deliver innovative solutions.
-                </p>
+              <div className="glassmorphic-card p-6 rounded-2xl">
+                <div className="prose dark:prose-invert max-w-none space-y-4 text-pretty">
+                  <p>
+                    Hello! I'm Hitesh, a passionate full-stack developer with expertise in AI and machine learning. 
+                    I combine technical skills with creative problem-solving to build innovative solutions.
+                  </p>
+                  <p>
+                    With over a year of experience in web and AI development, I've worked on projects ranging from 
+                    responsive web applications to advanced machine learning models. My approach focuses on 
+                    creating user-friendly experiences while leveraging cutting-edge technologies.
+                  </p>
+                  <p>
+                    When I'm not coding, you can find me exploring new technologies, contributing to open-source projects,
+                    or diving into the latest research in artificial intelligence. I believe in continuous learning and 
+                    staying ahead of industry trends to deliver innovative solutions.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
