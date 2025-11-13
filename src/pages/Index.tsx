@@ -76,14 +76,14 @@ const Index = () => {
           id="about" 
           className="flex min-h-[90vh] flex-col items-center justify-center py-16 md:flex-row md:items-center md:justify-between md:py-24"
         >
-          <div className="max-w-md text-center md:text-left">
+          <div className="max-w-md text-center md:text-left glassmorphic-card p-8 rounded-2xl">
             <div className="mb-2 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary opacity-0 animate-fade-in">
               Developer
             </div>
             <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               Hitesh<span className="text-primary">H</span>
             </h1>
-            <p className="mb-8 text-lg text-gray-600 dark:text-gray-300 opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+            <p className="mb-8 text-lg text-foreground/90 opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
               I craft elegant digital experiences with clean code and thoughtful design. Specializing in building modern, user-centric web applications that balance form and function.
             </p>
             <div className="space-x-4 opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
