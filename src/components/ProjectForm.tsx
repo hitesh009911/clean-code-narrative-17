@@ -7,11 +7,11 @@ import { useToast } from "@/hooks/use-toast";
 import { Image, ImagePlus, Star, FileText } from 'lucide-react';
 
 export type ProjectFormData = {
-  id?: number;
+  id?: string;
   title: string;
   description: string;
   image: string;
-  githubUrl?: string;
+  github_url?: string;
   tags: string[];
 };
 
@@ -22,7 +22,7 @@ type ProjectFormProps = {
 };
 
 const ProjectForm: React.FC<ProjectFormProps> = ({ 
-  initialData = { title: '', description: '', image: '', githubUrl: '', tags: [] },
+  initialData = { title: '', description: '', image: '', github_url: '', tags: [] },
   onSubmit,
   isEdit = false
 }) => {
@@ -49,23 +49,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     setFormData(prev => ({ ...prev, tags: tagsArray }));
   };
 
-  const saveFileInfo = (file: File, projectId: number | string) => {
-    if (file) {
-      const projectFileInfo = {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        lastModified: file.lastModified,
-        uploadedAt: new Date().toISOString()
-      };
-      
-      // Store in both localStorage and sessionStorage
-      const storageKey = `projectImage_${projectId}`;
-      const infoJSON = JSON.stringify(projectFileInfo);
-      localStorage.setItem(storageKey, infoJSON);
-      sessionStorage.setItem(storageKey, infoJSON);
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,28 +81,19 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       return;
     }
 
-    // Store file information if available
-    if (selectedFile) {
-      // Use our new function to save to both storage types
-      saveFileInfo(selectedFile, formData.id || 'new');
-    }
-
-    // Simulate API call
-    setTimeout(() => {
-      // Ensure image is in the data before submitting
-      const finalFormData = {
-        ...formData,
-        image: profileImagePreview || formData.image
-      };
-      
-      onSubmit(finalFormData);
-      setIsLoading(false);
-      
-      toast({
-        title: isEdit ? "Project Updated" : "Project Created",
-        description: `${formData.title} ${isEdit ? 'updated' : 'added'} successfully.`,
-      });
-    }, 800);
+    // Ensure image is in the data before submitting
+    const finalFormData = {
+      ...formData,
+      image: profileImagePreview || formData.image
+    };
+    
+    onSubmit(finalFormData);
+    setIsLoading(false);
+    
+    toast({
+      title: isEdit ? "Project Updated" : "Project Created",
+      description: isEdit ? "Your project has been updated successfully." : "Your project has been created successfully.",
+    });
   };
 
   const handleImageClick = () => {
@@ -298,9 +272,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             <span className="text-muted-foreground text-xs">(Optional)</span>
           </div>
           <Input
-            id="githubUrl"
-            name="githubUrl"
-            value={formData.githubUrl || ''}
+            id="github_url"
+            name="github_url"
+            value={formData.github_url || ''}
             onChange={handleChange}
             placeholder="https://github.com/username/repository"
           />

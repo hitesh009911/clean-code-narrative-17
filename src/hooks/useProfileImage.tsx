@@ -1,13 +1,10 @@
-
 import { useState, useEffect } from 'react';
-import { useProjectsStore } from '@/stores/projectsStore';
 
 /**
  * Custom hook to get and watch for changes to the profile image in localStorage
  * @returns The current profile image URL or null if not set
  */
 export const useProfileImage = () => {
-  const { getUploadedImage } = useProjectsStore();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   
   // Set the default image path for when no profile image is available
@@ -36,13 +33,6 @@ export const useProfileImage = () => {
                         
     if (directImage) {
       setProfileImage(directImage);
-      return;
-    }
-    
-    // Fall back to store function if direct access fails
-    const storeImage = getUploadedImage("userProfileImage");
-    if (storeImage) {
-      setProfileImage(storeImage);
       return;
     }
 

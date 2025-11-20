@@ -17,7 +17,7 @@ const ProjectEdit = () => {
   const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
-  const project = id ? getProjectById(Number(id)) : null;
+  const project = id ? getProjectById(id) : null;
 
   useEffect(() => {
     setMounted(true);
@@ -40,14 +40,13 @@ const ProjectEdit = () => {
 
   if (!mounted || !isAuthenticated || !project) return null;
 
-  const handleSubmit = (data: ProjectFormData) => {
+  const handleSubmit = async (data: ProjectFormData) => {
     if (id) {
-      updateProject(Number(id), data);
+      await updateProject(id, data);
       toast({
         title: "Project Updated",
         description: "Your project has been updated successfully."
       });
-      // Changed navigation from project detail to project management
       navigate('/projects/manage');
     }
   };

@@ -16,18 +16,19 @@ const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { getProjectById } = useProjectsStore();
+  const { getProjectById, fetchProjects } = useProjectsStore();
   
   const [mounted, setMounted] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const project = id ? getProjectById(Number(id)) : null;
+  const project = id ? getProjectById(id) : null;
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    fetchProjects();
+  }, [fetchProjects]);
 
   useEffect(() => {
     if (mounted && !project) {
@@ -116,9 +117,9 @@ const ProjectDetail = () => {
                 </Link>
               </Button>
               
-              {project.githubUrl ? (
+              {project.github_url ? (
                 <Button asChild className="flex items-center gap-2">
-                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <a href={project.github_url} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4" />
                     <span>GitHub</span>
                   </a>
