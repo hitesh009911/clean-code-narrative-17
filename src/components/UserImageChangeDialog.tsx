@@ -7,7 +7,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { useToast } from "@/hooks/use-toast";
 import { Image, Upload } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useProjectsStore } from "@/stores/projectsStore";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface UserImageChangeDialogProps {
@@ -21,7 +20,7 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
   onImageChange, 
   trigger 
 }) => {
-  const { storeUploadedImage } = useProjectsStore();
+  
   const [tabValue, setTabValue] = useState("upload");
   const [imageUrl, setImageUrl] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -72,18 +71,6 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
         if (selectedFile) {
           // Use the base64 representation
           newImage = previewImage;
-          
-          // Store file information for demonstration
-          const fileInfo = {
-            name: selectedFile.name,
-            type: selectedFile.type,
-            size: selectedFile.size,
-            lastModified: selectedFile.lastModified,
-            uploadedAt: new Date().toISOString()
-          };
-          
-          // Store file info for debugging/tracking
-          storeUploadedImage("userProfileImageInfo", JSON.stringify(fileInfo));
         }
       } else if (tabValue === "url" && imageUrl) {
         newImage = imageUrl;
@@ -98,9 +85,6 @@ const UserImageChangeDialog: React.FC<UserImageChangeDialogProps> = ({
       
       // Important: Store with the consistent key
       const imageKey = "userProfileImage";
-      
-      // Store the image using our central store
-      storeUploadedImage(imageKey, newImage);
       
       // Force update localStorage directly to ensure persistence
       localStorage.setItem(imageKey, newImage);

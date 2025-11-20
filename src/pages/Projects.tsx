@@ -12,7 +12,11 @@ import SplineFallback from "@/components/SplineFallback";
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
 const Projects = () => {
-  const { projects } = useProjectsStore();
+  const { projects, fetchProjects, isLoading } = useProjectsStore();
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);

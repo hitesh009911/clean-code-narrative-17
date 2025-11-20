@@ -27,9 +27,11 @@ const ProjectNew = () => {
 
   if (!mounted || !isAuthenticated) return null;
 
-  const handleSubmit = (data: ProjectFormData) => {
-    const newProject = addProject(data);
-    navigate(`/projects/${newProject.id}`);
+  const handleSubmit = async (data: ProjectFormData) => {
+    const newProject = await addProject(data);
+    if (newProject) {
+      navigate(`/projects/${newProject.id}`);
+    }
   };
 
   return (

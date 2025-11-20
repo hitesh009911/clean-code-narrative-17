@@ -14,7 +14,7 @@ import { useProfileImage } from "@/hooks/useProfileImage";
 const ProjectManage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
-  const { projects, deleteProject, storeUploadedImage } = useProjectsStore();
+  const { projects, deleteProject, fetchProjects, isLoading } = useProjectsStore();
   const { toast } = useToast();
   
   const [mounted, setMounted] = useState(false);
@@ -30,11 +30,17 @@ const ProjectManage = () => {
     }
   }, [mounted, isAuthenticated, navigate]);
 
+  useEffect(() => {
+    if (mounted && isAuthenticated) {
+      fetchProjects();
+    }
+  }, [mounted, isAuthenticated, fetchProjects]);
+
   if (!mounted || !isAuthenticated) return null;
 
-  const handleDelete = (id: number, title: string) => {
+  const handleDelete = async (id: string, title: string) => {
     if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
-      deleteProject(id);
+      await deleteProject(id);
       toast({
         title: "Project Deleted",
         description: `"${title}" has been removed.`,
@@ -52,10 +58,7 @@ const ProjectManage = () => {
   };
 
   const handleProfileImageChange = (newImage: string) => {
-    // Use our improved storage method
-    storeUploadedImage("userProfileImage", newImage);
-    
-    // Also write directly to storage for immediate effect
+    // Write directly to storage for immediate effect
     localStorage.setItem("userProfileImage", newImage);
     sessionStorage.setItem("userProfileImage", newImage);
     
@@ -186,9 +189,9 @@ const ProjectManage = () => {
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          {project.githubUrl ? (
+                          {project.github_url ? (
                             <a 
-                              href={project.githubUrl} 
+                              href={project.github_url}
                               target="_blank" 
                               rel="noopener noreferrer"
                               className="flex items-center text-sm text-primary hover:underline"
