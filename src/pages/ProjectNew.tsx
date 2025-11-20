@@ -30,7 +30,7 @@ const ProjectNew = () => {
   const handleSubmit = async (data: ProjectFormData) => {
     const newProject = await addProject(data);
     if (newProject) {
-      navigate(`/projects/${newProject.id}`);
+      navigate('/projects/manage');
     }
   };
 

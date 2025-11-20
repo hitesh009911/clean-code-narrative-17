@@ -187,14 +187,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   src={profileImagePreview || formData.image} 
                   alt="Project preview" 
                   className="h-full w-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1064&auto=format&fit=crop'; 
-                    toast({
-                      title: "Image Error",
-                      description: "Could not load the provided image URL. Using placeholder instead.",
-                      variant: "destructive",
-                    });
-                  }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                   <Button
