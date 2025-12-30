@@ -87,7 +87,7 @@ const ProjectDetail = () => {
           
           <div className="p-8">
             <div className="flex justify-between items-start mb-6">
-              <h1 className="text-3xl font-bold">{project.title}</h1>
+              <h1 className="text-3xl font-bold text-foreground">{project.title}</h1>
               {isAuthenticated && (
                 <Button variant="outline" size="sm" asChild className="ml-4">
                   <Link to={`/projects/edit/${project.id}`}>
@@ -98,7 +98,7 @@ const ProjectDetail = () => {
               )}
             </div>
             
-            <div className="text-lg text-muted-foreground mb-8">
+            <div className="text-lg text-foreground/90 mb-8">
               {linkify(project.description)}
             </div>
             
