@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Code, FileCode, Monitor, Database, Terminal, Server, Github, Layers, Zap, Cpu, Globe, Award, BrainCircuit, Bot, Sparkles, LineChart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import Navigation from "@/components/Navigation";
 import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -125,7 +124,6 @@ const Skills = () => {
         )}
       </div>
       
-      <Navigation />
       <main className="relative z-10 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="pt-8">
           <Button variant="ghost" asChild className="group mb-6">
