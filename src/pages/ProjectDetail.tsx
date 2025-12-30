@@ -3,7 +3,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { ArrowLeft, Edit, Github, Star } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import Navigation from "@/components/Navigation";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjectsStore } from "@/stores/projectsStore";
 import { linkify } from "@/utils/linkify";
@@ -64,7 +64,7 @@ const ProjectDetail = () => {
         )}
       </div>
 
-      <Navigation />
+      
       <main className="relative z-10 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="pt-8">
           <Button variant="ghost" asChild className="group mb-6">
