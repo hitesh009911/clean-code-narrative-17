@@ -40,8 +40,9 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
       if (error) throw error;
       
       set({ projects: data || [], isLoading: false });
-    } catch (error: any) {
-      set({ error: error.message, isLoading: false });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      set({ error: errorMessage, isLoading: false });
       console.error('Error fetching projects:', error);
     }
   },
@@ -76,8 +77,9 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
       }));
 
       return data;
-    } catch (error: any) {
-      set({ error: error.message, isLoading: false });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      set({ error: errorMessage, isLoading: false });
       console.error('Error adding project:', error);
       return null;
     }
@@ -106,8 +108,9 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
           isLoading: false
         }));
       }
-    } catch (error: any) {
-      set({ error: error.message, isLoading: false });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      set({ error: errorMessage, isLoading: false });
       console.error('Error updating project:', error);
     }
   },
@@ -126,8 +129,9 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
         projects: state.projects.filter(p => p.id !== id),
         isLoading: false
       }));
-    } catch (error: any) {
-      set({ error: error.message, isLoading: false });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      set({ error: errorMessage, isLoading: false });
       console.error('Error deleting project:', error);
     }
   }

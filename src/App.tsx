@@ -15,6 +15,7 @@ import ProjectNew from "./pages/ProjectNew";
 import ProjectEdit from "./pages/ProjectEdit";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import { Analytics } from "@vercel/analytics/react";
 
 // Create a new query client with default stale time to improve caching
 const queryClient = new QueryClient({
@@ -33,6 +34,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <Analytics />
           <HashRouter basename="">
             <Routes>
               <Route path="/" element={<Index />} />

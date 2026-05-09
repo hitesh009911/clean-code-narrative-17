@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import AdminLogin from "@/components/AdminLogin";
 import { useProfileImage } from "@/hooks/useProfileImage";
+import SplineFallback from "@/components/SplineFallback";
 
 const skillCategories = [
   {
@@ -45,6 +46,44 @@ const skillCategories = [
       { name: "AWS & Vercel", icon: <Globe className="h-5 w-5" />, color: "#F97316" },
     ],
   },
+];
+
+const certifications = [
+  {
+    name: "AWS Certified Developer – Associate",
+    issuer: "Amazon Web Services",
+    date: "2023",
+    url: "https://www.credly.com/badges/272b0336-8f16-4f67-9974-3e09fa43ada1",
+    image: "/badges/aws.png"
+  },
+  {
+    name: "GitLab Certified CI/CD Associate",
+    issuer: "GitLab",
+    date: "2023",
+    url: "https://www.credly.com/badges/c7828e36-13f9-41ad-8bfb-0096b9191822",
+    image: "/badges/gitlab.png"
+  },
+  {
+    name: "PCAP™ – Certified Associate Python Programmer",
+    issuer: "Python Institute",
+    date: "2023",
+    url: "https://www.credly.com/badges/b3af393c-0886-4232-a6b3-9addd68a1d60",
+    image: "/badges/python.png"
+  },
+  {
+    name: "Google Cybersecurity Professional Certificate",
+    issuer: "Coursera",
+    date: "2024",
+    url: "https://www.credly.com/badges/9f0f28a7-4dc3-402b-a63a-a899945124ee",
+    image: "/badges/google.png"
+  },
+  {
+    name: "Cybersecurity Fundamentals",
+    issuer: "IBM-SkillsBuild",
+    date: "2024",
+    url: "https://www.credly.com/badges/4162d661-1f87-4088-828b-37e6bcfaf530",
+    image: "/badges/ibm.png"
+  }
 ];
 
 const developerStats = [
@@ -115,6 +154,7 @@ const Skills = () => {
   return (
     <div className="relative min-h-screen bg-background pt-16">
       <div className="fixed inset-0 z-0">
+        <SplineFallback isError={splineError} isLoading={!splineLoaded && !splineError} />
         {!splineError && (
           <Spline 
             scene="https://prod.spline.design/unVoHzNnqDrA5Ql1/scene.splinecode" 
@@ -269,7 +309,66 @@ const Skills = () => {
           </div>
         </section>
 
-        <section id="admin" className="py-12 md:py-16 border-t border-border/30">
+        <section className="py-8 md:py-16 border-t border-border/30">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold mb-6 md:text-4xl"
+            >
+              Certifications & Badges
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-muted-foreground"
+            >
+              Verified credentials and professional achievements.
+            </motion.p>
+          </div>
+
+          <motion.div 
+            className="flex flex-wrap justify-center gap-8"
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            {certifications.map((cert, index) => (
+              <motion.a
+                key={cert.name}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                variants={item}
+                className="group relative flex flex-col items-center bg-card/40 backdrop-blur-sm border border-border/50 rounded-2xl p-6 transition-all hover:bg-card/60 w-64"
+                whileHover={{
+                  y: -10,
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                <div className="h-32 w-32 mb-6 relative">
+                  <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <img 
+                    src={cert.image} 
+                    alt={cert.name} 
+                    className="h-full w-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <h3 className="text-center font-semibold text-foreground mb-2 line-clamp-2">{cert.name}</h3>
+                <p className="text-sm text-muted-foreground text-center">{cert.issuer}</p>
+                <span className="mt-4 text-xs font-medium bg-secondary text-secondary-foreground px-3 py-1 rounded-full">
+                  {cert.date}
+                </span>
+              </motion.a>
+            ))}
+          </motion.div>
+        </section>
+
+        <section id="admin" className="hidden md:block py-12 md:py-16 border-t border-border/30">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
