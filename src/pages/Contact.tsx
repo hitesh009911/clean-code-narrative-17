@@ -1,10 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowLeft, Github, Linkedin, Mail, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Spline from '@splinetool/react-spline';
 import SplineFallback from "@/components/SplineFallback";
+import { DownloadButton } from "@/components/ui/download-animation";
 
 const Contact = () => {
   const [mounted, setMounted] = useState(false);
@@ -55,10 +56,17 @@ const Contact = () => {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold mb-6 md:text-4xl text-white">Get In Touch</h2>
             <p className="text-white mb-8">Have a project in mind or want to chat? Feel free to reach out.</p>
-            
-            <div className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-white hover:bg-primary/20 transition-all">
-              <Mail className="mr-2 h-4 w-4" />
-              <a href="mailto:hitumsyuru@gmail.com" className="text-sm font-medium hover:text-primary transition-colors">hitumsyuru@gmail.com</a>
+            <div className="flex flex-col items-center gap-6 mb-8">
+              <div className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-white hover:bg-primary/20 transition-all">
+                <Mail className="mr-2 h-4 w-4" />
+                <a href="mailto:hitumsyuru@gmail.com" className="text-sm font-medium hover:text-primary transition-colors">hitumsyuru@gmail.com</a>
+              </div>
+              <div className="mt-2">
+                <DownloadButton onDownload={() => {
+                  // Direct download link for Google Drive
+                  window.location.href = 'https://drive.google.com/uc?export=download&id=1hdyzqEDriVrTE1cktdNUTiThgCpn9F2P';
+                }} />
+              </div>
             </div>
           </div>
           

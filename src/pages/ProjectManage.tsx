@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, LogOut, Plus, Settings, Trash2, Key, ImageIcon, Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; 
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Navigation from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,7 +16,7 @@ const ProjectManage = () => {
   const { isAuthenticated, logout } = useAuth();
   const { projects, deleteProject, fetchProjects, isLoading } = useProjectsStore();
   const { toast } = useToast();
-  
+
   const [mounted, setMounted] = useState(false);
   const profileImage = useProfileImage();
 
@@ -61,12 +61,12 @@ const ProjectManage = () => {
     // Write directly to storage for immediate effect
     localStorage.setItem("userProfileImage", newImage);
     sessionStorage.setItem("userProfileImage", newImage);
-    
+
     toast({
       title: "Profile Image Updated",
       description: "Your profile image has been updated successfully.",
     });
-    
+
     // Force a refresh to ensure the image updates everywhere
     window.dispatchEvent(new Event('storage'));
     window.dispatchEvent(new Event('storage-local'));
@@ -94,9 +94,9 @@ const ProjectManage = () => {
               <h1 className="text-3xl font-bold">Project Management</h1>
               <div className="flex items-center gap-2 mt-2">
                 <Avatar className="h-10 w-10 border-2 border-primary">
-                  <AvatarImage 
-                    src={displayImage} 
-                    alt="Profile" 
+                  <AvatarImage
+                    src={displayImage}
+                    alt="Profile"
                     onError={(e) => {
                       // If image fails to load, use the default
                       const target = e.target as HTMLImageElement;
@@ -111,9 +111,9 @@ const ProjectManage = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="flex gap-3">
-            <UserImageChangeDialog 
+            <UserImageChangeDialog
               currentImage={displayImage}
               onImageChange={handleProfileImageChange}
               trigger={
@@ -123,8 +123,8 @@ const ProjectManage = () => {
                 </Button>
               }
             />
-            
-            <PasswordChangeDialog 
+
+            <PasswordChangeDialog
               trigger={
                 <Button variant="outline" className="flex items-center gap-2">
                   <Key className="h-4 w-4" />
@@ -132,7 +132,7 @@ const ProjectManage = () => {
                 </Button>
               }
             />
-            
+
             <Button
               onClick={handleLogout}
               variant="outline"
@@ -141,7 +141,7 @@ const ProjectManage = () => {
               <LogOut className="h-4 w-4" />
               Logout
             </Button>
-            
+
             <Button asChild>
               <Link to="/projects/new">
                 <Plus className="h-4 w-4 mr-2" />
@@ -150,11 +150,11 @@ const ProjectManage = () => {
             </Button>
           </div>
         </div>
-        
+
         <div className="bg-card/60 backdrop-blur-sm rounded-xl border border-border/50 shadow-lg overflow-hidden">
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-4">Your Projects</h2>
-            
+
             {projects.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground mb-4">No projects found</p>
@@ -190,9 +190,9 @@ const ProjectManage = () => {
                         </td>
                         <td className="px-4 py-3">
                           {project.github_url ? (
-                            <a 
+                            <a
                               href={project.github_url}
-                              target="_blank" 
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center text-sm text-primary hover:underline"
                             >
@@ -215,8 +215,8 @@ const ProjectManage = () => {
                                 <Settings className="h-4 w-4" />
                               </Link>
                             </Button>
-                            <Button 
-                              variant="destructive" 
+                            <Button
+                              variant="destructive"
                               size="sm"
                               onClick={() => handleDelete(project.id, project.title)}
                             >

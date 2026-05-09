@@ -3,6 +3,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { useProjectsStore } from "@/stores/projectsStore";
 import SplineFallback from "@/components/SplineFallback";
@@ -89,48 +90,76 @@ const Projects = () => {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
           >
-            {projects.map((project, index) => (
-              <motion.div 
-                key={project.id} 
-                className="project-card group rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden hover:shadow-xl transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index, duration: 0.5 }}
-                whileHover={{ y: -5 }}
-              >
-                <Link to={`/projects/${project.id}`} className="block">
-                  <div className="aspect-video w-full overflow-hidden">
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      onLoad={() => setImageLoaded(true)}
-                    />
-                  </div>
+            {isLoading ? (
+              Array.from({ length: 6 }).map((_, index) => (
+                <motion.div
+                  key={`skeleton-${index}`}
+                  className="project-card rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.5 }}
+                >
+                  <Skeleton className="aspect-video w-full rounded-none" />
                   <div className="p-6">
-                    <h3 className="mb-2 text-xl font-semibold group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="mb-4 text-sm text-muted-foreground">
-                      {project.description.length > 120 
-                        ? `${project.description.substring(0, 120)}...` 
-                        : project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map(tag => (
-                        <span key={tag} className="rounded-full bg-secondary/50 px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-                          {tag}
-                        </span>
-                      ))}
+                    <Skeleton className="h-7 w-2/3 mb-2" />
+                    <Skeleton className="h-4 w-full mb-1" />
+                    <Skeleton className="h-4 w-5/6 mb-4" />
+                    <div className="flex gap-2">
+                      <Skeleton className="h-5 w-12 rounded-full" />
+                      <Skeleton className="h-5 w-16 rounded-full" />
+                      <Skeleton className="h-5 w-14 rounded-full" />
                     </div>
                     <div className="mt-4 pt-4 border-t border-border/30 flex justify-between items-center">
-                      <span className="text-xs text-muted-foreground">View details</span>
-                      <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-4 w-4" />
                     </div>
                   </div>
-                </Link>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))
+            ) : (
+              projects.map((project, index) => (
+                <motion.div 
+                  key={project.id} 
+                  className="project-card group rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden hover:shadow-xl transition-all duration-300"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.5 }}
+                  whileHover={{ y: -5 }}
+                >
+                  <Link to={`/projects/${project.id}`} className="block">
+                    <div className="aspect-video w-full overflow-hidden">
+                      <img 
+                        src={project.image} 
+                        alt={project.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onLoad={() => setImageLoaded(true)}
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="mb-2 text-xl font-semibold group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="mb-4 text-sm text-muted-foreground">
+                        {project.description.length > 120 
+                          ? `${project.description.substring(0, 120)}...` 
+                          : project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tags.map(tag => (
+                          <span key={tag} className="rounded-full bg-secondary/50 px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-border/30 flex justify-between items-center">
+                        <span className="text-xs text-muted-foreground">View details</span>
+                        <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))
+            )}
           </motion.div>
         </section>
       </main>

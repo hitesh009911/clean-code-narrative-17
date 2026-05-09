@@ -10,6 +10,7 @@ import Spline from '@splinetool/react-spline';
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileImage } from "@/hooks/useProfileImage";
 import SplineFallback from "@/components/SplineFallback";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
@@ -18,6 +19,7 @@ const Index = () => {
   const [splineError, setSplineError] = useState(false);
   const profileImage = useProfileImage();
   const { isAuthenticated } = useAuth();
+  const isMobile = useIsMobile();
 
   // Initialize after mount to avoid hydration issues
   useEffect(() => {
@@ -59,7 +61,7 @@ const Index = () => {
       <div className="fixed inset-0 z-0">
         {!splineError && (
           <Spline 
-            scene="https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode" 
+            scene={isMobile ? "https://prod.spline.design/unVoHzNnqDrA5Ql1/scene.splinecode" : "https://prod.spline.design/bcUN1YEwpO9lZsmS/scene.splinecode"}
             onLoad={handleSplineLoad}
             onError={handleSplineError}
           />
